@@ -1,0 +1,2474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>计费平台</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+/* ==================== CSS VARIABLES & THEMES ==================== */
+:root {
+  --bg-primary: #faf9f5;
+  --bg-secondary: #f0eeea;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fefefe;
+  --bg-input: #f7f6f3;
+  --bg-sidebar: #1a1a2e;
+  --bg-sidebar-hover: #252545;
+  --bg-sidebar-active: #2d2d52;
+  --bg-header: #ffffff;
+  --accent: #d97757;
+  --accent-light: #e89b7f;
+  --accent-dark: #c4613f;
+  --accent-glow: rgba(217,119,87,0.2);
+  --accent-soft: rgba(217,119,87,0.08);
+  --blue: #6a9bcc;
+  --blue-light: #8bb8d8;
+  --blue-dark: #4a7faa;
+  --green: #788c5d;
+  --green-light: #96a87d;
+  --green-dark: #5c6e46;
+  --text-primary: #141413;
+  --text-secondary: #5a5a58;
+  --text-muted: #8a8a88;
+  --text-sidebar: #c8c8d0;
+  --text-sidebar-muted: #8888a0;
+  --text-sidebar-active: #ffffff;
+  --border: #e8e6e2;
+  --border-light: #f0eeea;
+  --border-accent: rgba(217,119,87,0.3);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.1);
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+  --font-body: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Lora', Georgia, serif;
+  --sidebar-width: 260px;
+  --header-height: 64px;
+}
+
+/* Theme: 现代深蓝 */
+[data-theme="deep-blue"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --bg-card-hover: #253449;
+  --bg-input: #0f172a;
+  --bg-sidebar: #0c1222;
+  --bg-sidebar-hover: #1a2744;
+  --bg-sidebar-active: #1e3a5f;
+  --bg-header: rgba(15,23,42,0.9);
+  --accent: #60a5fa;
+  --accent-light: #93c5fd;
+  --accent-dark: #3b82f6;
+  --accent-glow: rgba(96,165,250,0.2);
+  --accent-soft: rgba(96,165,250,0.08);
+  --blue: #38bdf8;
+  --green: #4ade80;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: rgba(148,163,184,0.15);
+  --border-light: rgba(148,163,184,0.08);
+  --border-accent: rgba(96,165,250,0.3);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.5);
+}
+
+/* Theme: 金色主题 */
+[data-theme="golden"] {
+  --bg-primary: #1c1917;
+  --bg-secondary: #292524;
+  --bg-card: #292524;
+  --bg-card-hover: #33302e;
+  --bg-input: #1c1917;
+  --bg-sidebar: #0f0d0b;
+  --bg-sidebar-hover: #292420;
+  --bg-sidebar-active: #3d3528;
+  --bg-header: rgba(28,25,23,0.9);
+  --accent: #f59e0b;
+  --accent-light: #fbbf24;
+  --accent-dark: #d97706;
+  --accent-glow: rgba(245,158,11,0.2);
+  --accent-soft: rgba(245,158,11,0.08);
+  --blue: #fb923c;
+  --green: #a3e635;
+  --text-primary: #fafaf9;
+  --text-secondary: #a8a29e;
+  --text-muted: #78716c;
+  --border: rgba(168,162,158,0.15);
+  --border-light: rgba(168,162,158,0.08);
+  --border-accent: rgba(245,158,11,0.3);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow: 0 2px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.6);
+}
+
+/* Theme: 现代紫色 */
+[data-theme="purple"] {
+  --bg-primary: #0f0a1a;
+  --bg-secondary: #1a1229;
+  --bg-card: #1a1229;
+  --bg-card-hover: #241a38;
+  --bg-input: #0f0a1a;
+  --bg-sidebar: #0a0614;
+  --bg-sidebar-hover: #1f1535;
+  --bg-sidebar-active: #2d1f4e;
+  --bg-header: rgba(15,10,26,0.9);
+  --accent: #a78bfa;
+  --accent-light: #c4b5fd;
+  --accent-dark: #8b5cf6;
+  --accent-glow: rgba(167,139,250,0.2);
+  --accent-soft: rgba(167,139,250,0.08);
+  --blue: #818cf8;
+  --green: #34d399;
+  --text-primary: #f5f3ff;
+  --text-secondary: #a5a0b8;
+  --text-muted: #6b6580;
+  --border: rgba(167,139,250,0.12);
+  --border-light: rgba(167,139,250,0.06);
+  --border-accent: rgba(167,139,250,0.3);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow: 0 2px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.6);
+}
+
+/* ==================== RESET & BASE ==================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== LAYOUT ==================== */
+.app-container {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: var(--header-height) 1fr;
+  min-height: 100vh;
+}
+
+/* ==================== HEADER ==================== */
+.header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: var(--bg-header);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-height);
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+.logo-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #fff;
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+.header-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem; font-weight: 700;
+  color: var(--text-primary);
+}
+.header-subtitle {
+  font-size: 0.7rem; color: var(--text-muted);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 500;
+}
+.header-right { display: flex; align-items: center; gap: 8px; }
+.header-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--radius-sm);
+  background: var(--bg-secondary); border: 1px solid var(--border);
+  color: var(--text-secondary); font-size: 0.82rem;
+  cursor: pointer; transition: var(--transition);
+  font-family: var(--font-body); font-weight: 500;
+}
+.header-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--border-accent); }
+.header-btn i { font-size: 0.85rem; }
+.theme-select {
+  padding: 7px 12px; border-radius: var(--radius-sm);
+  background: var(--bg-secondary); border: 1px solid var(--border);
+  color: var(--text-primary); font-size: 0.82rem;
+  cursor: pointer; font-family: var(--font-body); outline: none;
+}
+.theme-select:focus { border-color: var(--accent); }
+.theme-select option { background: var(--bg-card); color: var(--text-primary); }
+.mobile-toggle {
+  display: none; width: 36px; height: 36px;
+  border-radius: var(--radius-sm); border: 1px solid var(--border);
+  background: var(--bg-secondary); color: var(--text-secondary);
+  cursor: pointer; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+
+/* ==================== SIDEBAR ==================== */
+.sidebar {
+  background: var(--bg-sidebar);
+  padding: 16px 10px;
+  overflow-y: auto;
+  height: calc(100vh - var(--header-height));
+  position: sticky;
+  top: var(--header-height);
+  transition: var(--transition);
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+.nav-group-title {
+  font-size: 0.65rem; color: var(--text-sidebar-muted);
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px 12px 6px; font-weight: 600;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 14px; border-radius: var(--radius-sm);
+  cursor: pointer; transition: var(--transition);
+  color: var(--text-sidebar); font-size: 0.85rem;
+  margin-bottom: 1px; position: relative;
+  border: 1px solid transparent;
+  font-weight: 400;
+}
+.nav-item:hover { background: var(--bg-sidebar-hover); color: var(--text-sidebar-active); }
+.nav-item.active {
+  background: var(--bg-sidebar-active);
+  color: var(--accent-light);
+  border-color: var(--border-accent);
+  font-weight: 500;
+}
+.nav-item.active::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%); width: 3px; height: 55%;
+  border-radius: 0 3px 3px 0; background: var(--accent);
+}
+.nav-item i { width: 18px; text-align: center; font-size: 0.8rem; }
+.nav-badge {
+  margin-left: auto; padding: 1px 7px; border-radius: 10px;
+  background: var(--accent); color: #fff;
+  font-size: 0.6rem; font-weight: 700;
+}
+
+/* ==================== MAIN CONTENT ==================== */
+.main-content {
+  padding: 28px 36px;
+  overflow-y: auto;
+  height: calc(100vh - var(--header-height));
+  background: var(--bg-primary);
+}
+.main-content::-webkit-scrollbar { width: 5px; }
+.main-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ==================== PAGE SECTIONS ==================== */
+.page-section { display: none; animation: fadeSlideIn 0.35s ease; }
+.page-section.active { display: block; }
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page-header { margin-bottom: 24px; }
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.65rem; font-weight: 700;
+  color: var(--text-primary); margin-bottom: 4px;
+}
+.page-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
+
+/* ==================== CARDS ==================== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px; margin-bottom: 18px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+.card:hover { box-shadow: var(--shadow); border-color: var(--border-accent); }
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem; font-weight: 600;
+  color: var(--text-primary); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.card-title i { color: var(--accent); font-size: 0.95rem; }
+.card-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+  margin-left: 12px;
+}
+
+/* ==================== FORMS ==================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label {
+  font-size: 0.78rem; color: var(--text-secondary);
+  font-weight: 500; letter-spacing: 0.2px;
+}
+.form-input, .form-select {
+  padding: 9px 13px;
+  background: var(--bg-input); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary); font-size: 0.92rem;
+  font-family: var(--font-body);
+  transition: var(--transition); outline: none;
+}
+.form-input:focus, .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.form-input::placeholder { color: var(--text-muted); }
+.form-select option { background: var(--bg-card); color: var(--text-primary); }
+.form-hint { font-size: 0.7rem; color: var(--text-muted); font-style: italic; }
+
+/* ==================== BUTTONS ==================== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 7px; padding: 10px 22px; border-radius: var(--radius-sm);
+  font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  transition: var(--transition); border: 1px solid transparent;
+  font-family: var(--font-body);
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff; border-color: transparent;
+  box-shadow: 0 2px 10px var(--accent-glow);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
+.btn-primary:active { transform: translateY(0); }
+.btn-secondary {
+  background: var(--bg-secondary); color: var(--text-secondary);
+  border-color: var(--border);
+}
+.btn-secondary:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--border-accent); }
+.btn-danger {
+  background: rgba(239,68,68,0.08); color: #ef4444;
+  border-color: rgba(239,68,68,0.15);
+}
+.btn-danger:hover { background: rgba(239,68,68,0.15); }
+.btn-group { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+
+/* ==================== RATE TABLES ==================== */
+.rate-table-wrapper {
+  overflow-x: auto; margin: 14px 0;
+  border-radius: var(--radius-sm); border: 1px solid var(--border);
+}
+.rate-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.rate-table th {
+  background: var(--bg-secondary); color: var(--text-secondary);
+  padding: 9px 13px; text-align: center; font-weight: 600;
+  font-size: 0.75rem; letter-spacing: 0.4px;
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+.rate-table td {
+  padding: 8px 13px; text-align: center;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+}
+.rate-table tr:last-child td { border-bottom: none; }
+.rate-table tr:hover td { background: var(--accent-soft); }
+.rate-table .hl { color: var(--accent); font-weight: 600; }
+
+/* ==================== COLLAPSIBLE ==================== */
+.collapsible-header {
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; padding: 14px 18px;
+  background: var(--bg-secondary); border-radius: var(--radius);
+  border: 1px solid var(--border); margin-bottom: 0;
+  transition: var(--transition);
+}
+.collapsible-header:hover { border-color: var(--border-accent); }
+.collapsible-header h3 {
+  font-family: var(--font-display);
+  font-size: 0.95rem; font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+  color: var(--text-primary);
+}
+.collapsible-header h3 i { color: var(--accent); font-size: 0.85rem; }
+.collapsible-arrow {
+  transition: transform 0.3s ease;
+  color: var(--text-muted); font-size: 0.8rem;
+}
+.collapsible-arrow.open { transform: rotate(180deg); }
+.collapsible-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: var(--bg-card);
+}
+.collapsible-body.open {
+  max-height: 2000px;
+  padding: 18px;
+}
+.formula-box {
+  background: var(--bg-secondary); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 13px 16px;
+  margin: 10px 0; font-family: 'Courier New', monospace;
+  font-size: 0.8rem; color: var(--text-secondary); line-height: 1.7;
+}
+.formula-box .var { color: var(--accent); font-weight: 600; }
+
+/* ==================== RESULT PANEL ==================== */
+.result-panel {
+  background: var(--bg-card);
+  border: 2px solid var(--border-accent);
+  border-radius: var(--radius-lg);
+  padding: 26px; margin-top: 20px;
+  display: none; animation: fadeSlideIn 0.35s ease;
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+.result-panel.show { display: block; }
+
+/* 依据文件列表 */
+.ref-file-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border-light);
+  transition: background 0.2s;
+  text-decoration: none;
+}
+.ref-file-item:last-child { border-bottom: none; }
+.ref-file-item:hover { background: var(--bg-secondary); }
+.ref-file-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.ref-file-icon.pdf { background: rgba(239,68,68,0.1); color: #ef4444; }
+.ref-file-icon.word { background: rgba(59,130,246,0.1); color: #3b82f6; }
+.ref-file-icon.excel { background: rgba(34,197,94,0.1); color: #22c55e; }
+.ref-file-icon.image { background: rgba(168,85,247,0.1); color: #a855f7; }
+.ref-file-icon.other { background: var(--bg-secondary); color: var(--text-muted); }
+.ref-file-info { flex: 1; min-width: 0; }
+.ref-file-name {
+  font-size: 0.9rem; font-weight: 500; color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ref-file-meta { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+.ref-file-dl {
+  width: 34px; height: 34px; border: none; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(106,155,204,0.1); color: var(--blue);
+  cursor: pointer; font-size: 0.85rem; transition: all 0.2s; flex-shrink: 0;
+}
+.ref-file-dl:hover { background: rgba(106,155,204,0.2); }
+.ref-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+.ref-empty i { font-size: 2.5rem; margin-bottom: 12px; display: block; opacity: 0.4; }
+
+/* 首页模块卡片 */
+.page-home .card[style*="cursor:pointer"] { transition: all 0.2s; border: 1px solid var(--border); }
+.page-home .card[style*="cursor:pointer"]:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); border-color: var(--accent); }
+
+.result-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--accent); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-export {
+  margin-left: auto;
+  padding: 5px 12px;
+  border: 1px solid #22c55e;
+  border-radius: 6px;
+  background: rgba(34,197,94,0.08);
+  color: #22c55e;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+.btn-export:hover { background: rgba(34,197,94,0.18); }
+.result-amount {
+  font-family: var(--font-display);
+  font-size: 2rem; font-weight: 800;
+  color: var(--accent); margin: 14px 0;
+}
+.result-amount .unit {
+  font-size: 0.9rem; font-weight: 400;
+  color: var(--text-secondary); margin-left: 4px;
+}
+.result-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px; margin-top: 14px;
+}
+.result-item {
+  padding: 11px 14px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.result-item-label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 3px; }
+.result-item-value { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+.result-breakdown {
+  margin-top: 18px; padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.result-breakdown-title {
+  font-size: 0.82rem; color: var(--text-secondary);
+  margin-bottom: 8px; font-weight: 600;
+}
+.result-breakdown pre {
+  font-family: 'Courier New', monospace;
+  font-size: 0.78rem; color: var(--text-secondary);
+  line-height: 1.8; white-space: pre-wrap;
+}
+
+/* ==================== SUMMARY TABLE ==================== */
+.summary-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.summary-table th {
+  background: var(--bg-secondary); padding: 11px 14px;
+  text-align: left; color: var(--text-secondary);
+  font-weight: 600; font-size: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.summary-table td { padding: 10px 14px; border-bottom: 1px solid var(--border-light); }
+.summary-table tr:last-child td { border-bottom: none; }
+.summary-table tr:hover td { background: var(--accent-soft); }
+.summary-table .amount { font-weight: 600; color: var(--accent); font-family: 'Courier New', monospace; }
+.summary-table .total-row td {
+  background: var(--accent-soft); font-weight: 700;
+  color: var(--accent); border-top: 2px solid var(--border-accent);
+}
+/* 汇总占比条 */
+.pct-bar-wrap { width: 100%; height: 6px; background: var(--bg-secondary); border-radius: 3px; margin-top: 4px; }
+.pct-bar { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.5s ease; }
+.summary-table .pct-cell { width: 60px; text-align: right; color: var(--text-muted); font-size: 0.78rem; }
+.summary-table .rank-cell { width: 30px; text-align: center; color: var(--text-muted); font-size: 0.78rem; font-weight: 700; }
+.summary-table .rank-top { color: var(--accent); }
+.summary-total-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; background: var(--accent-soft);
+  border-radius: var(--radius); margin-top: 16px;
+}
+.summary-total-bar .total-label { font-size: 0.9rem; color: var(--text-secondary); }
+.summary-total-bar .total-value { font-size: 1.3rem; font-weight: 800; color: var(--accent); font-family: 'Courier New', monospace; }
+.summary-table .cat-row td { background: var(--bg-secondary); padding: 10px 14px; font-size: 0.82rem; color: var(--text-secondary); border-bottom: 2px solid var(--border); }
+
+/* ==================== AI问答 ==================== */
+.ai-chat-panel {
+  position: fixed; bottom: 20px; right: 20px;
+  width: 400px; max-height: 560px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  display: flex; flex-direction: column; z-index: 9000;
+  transform: translateY(20px); opacity: 0; pointer-events: none;
+  transition: all 0.3s ease;
+}
+.ai-chat-panel.show { transform: translateY(0); opacity: 1; pointer-events: all; }
+.ai-chat-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary); border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.ai-chat-header h3 { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 8px; }
+.ai-chat-header h3 i { color: var(--accent); }
+.ai-chat-close { background: none; border: none; font-size: 1rem; color: var(--text-muted); cursor: pointer; padding: 4px; }
+.ai-chat-close:hover { color: var(--text-primary); }
+.ai-chat-messages {
+  flex: 1; overflow-y: auto; padding: 16px; min-height: 200px; max-height: 380px;
+}
+.ai-chat-messages::-webkit-scrollbar { width: 4px; }
+.ai-chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.ai-msg { margin-bottom: 12px; animation: fadeIn 0.3s ease; }
+.ai-msg-bot .ai-msg-bubble {
+  background: var(--bg-secondary); border-radius: 4px 14px 14px 14px;
+  padding: 10px 14px; font-size: 0.85rem; color: var(--text-primary); line-height: 1.6;
+  display: inline-block; max-width: 90%;
+}
+.ai-msg-user { text-align: right; }
+.ai-msg-user .ai-msg-bubble {
+  background: var(--accent); color: #fff; border-radius: 14px 4px 14px 14px;
+  padding: 8px 14px; font-size: 0.85rem; display: inline-block; max-width: 90%;
+}
+.ai-msg-bubble a { color: var(--accent); text-decoration: underline; cursor: pointer; }
+.ai-msg-bot .ai-msg-bubble a { color: var(--accent); }
+.ai-msg-bubble strong { font-weight: 600; }
+.ai-msg-bubble ul { margin: 6px 0; padding-left: 18px; }
+.ai-msg-bubble li { margin: 3px 0; }
+.ai-chat-suggestions { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 8px; }
+.ai-suggest-btn {
+  padding: 5px 10px; border: 1px solid var(--border); border-radius: 20px;
+  background: var(--bg-card); color: var(--text-secondary); font-size: 0.75rem;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.ai-suggest-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.ai-chat-input {
+  display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--border);
+}
+.ai-chat-input input {
+  flex: 1; padding: 9px 14px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg-secondary); color: var(--text-primary); font-size: 0.85rem;
+  outline: none; transition: border-color 0.2s;
+}
+.ai-chat-input input:focus { border-color: var(--accent); }
+.ai-chat-input input::placeholder { color: var(--text-muted); }
+.ai-chat-input button {
+  padding: 9px 16px; border: none; border-radius: 8px;
+  background: var(--accent); color: #fff; font-size: 0.85rem;
+  cursor: pointer; transition: opacity 0.2s; font-weight: 500;
+}
+.ai-chat-input button:hover { opacity: 0.85; }
+
+/* ==================== MODAL ==================== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); width: 90%; max-width: 780px;
+  max-height: 80vh; overflow: hidden;
+  box-shadow: var(--shadow-xl); animation: modalSlide 0.3s ease;
+}
+@keyframes modalSlide {
+  from { opacity: 0; transform: translateY(-16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+}
+.modal-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+.modal-close {
+  width: 30px; height: 30px; display: flex;
+  align-items: center; justify-content: center;
+  border-radius: 8px; border: none;
+  background: var(--bg-secondary); color: var(--text-secondary);
+  cursor: pointer; transition: var(--transition); font-size: 0.95rem;
+}
+.modal-close:hover { background: #ef4444; color: #fff; }
+.modal-body { padding: 22px; overflow-y: auto; max-height: calc(80vh - 65px); }
+.modal-body::-webkit-scrollbar { width: 4px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ==================== LIST ITEMS ==================== */
+.list-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+}
+.list-item:last-child { border-bottom: none; }
+.list-item:hover { background: var(--accent-soft); }
+.list-item-icon {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--accent-soft); display: flex;
+  align-items: center; justify-content: center;
+  color: var(--accent); font-size: 0.8rem; flex-shrink: 0;
+}
+.list-item-content { flex: 1; min-width: 0; }
+.list-item-title { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); }
+.list-item-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+.list-item-amount { font-weight: 700; color: var(--accent); font-size: 0.9rem; white-space: nowrap; }
+.list-item-actions { display: flex; gap: 5px; }
+.list-item-actions button {
+  width: 26px; height: 26px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--bg-secondary);
+  color: var(--text-secondary); cursor: pointer;
+  transition: var(--transition); font-size: 0.7rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.list-item-actions button:hover { border-color: var(--accent); color: var(--accent); }
+.list-item-actions button.delete-btn:hover { border-color: #ef4444; color: #ef4444; }
+
+/* ==================== TOAST ==================== */
+.toast-container {
+  position: fixed; top: 80px; right: 20px; z-index: 2000;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.toast {
+  padding: 10px 18px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow); font-size: 0.82rem;
+  color: var(--text-primary); animation: toastIn 0.3s ease;
+  display: flex; align-items: center; gap: 8px;
+}
+.toast.success { border-color: var(--green); }
+.toast.success i { color: var(--green); }
+.toast.error { border-color: #ef4444; }
+.toast.error i { color: #ef4444; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ==================== DYNAMIC FIELDS ==================== */
+.dynamic-fields { display: none; animation: fadeSlideIn 0.3s ease; margin-top: 14px; }
+.dynamic-fields.show { display: block; }
+.empty-state { text-align: center; padding: 36px 18px; color: var(--text-muted); }
+.empty-state i { font-size: 2.2rem; margin-bottom: 10px; opacity: 0.3; }
+.empty-state p { font-size: 0.85rem; }
+
+/* ==================== HELP ==================== */
+.help-section { margin-bottom: 20px; }
+.help-section h3 { font-size: 0.95rem; color: var(--accent); margin-bottom: 8px; font-weight: 600; }
+.help-section p, .help-section li { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; }
+.help-section ul { padding-left: 18px; }
+.help-section li { margin-bottom: 3px; }
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .app-container { grid-template-columns: 1fr; }
+  .sidebar {
+    position: fixed; left: -280px; top: var(--header-height);
+    width: var(--sidebar-width); height: calc(100vh - var(--header-height));
+    z-index: 200; transition: var(--transition);
+    background: var(--bg-sidebar);
+    box-shadow: var(--shadow-xl);
+  }
+  .sidebar.open { left: 0; }
+  .main-content { height: auto; min-height: calc(100vh - var(--header-height)); }
+  .mobile-toggle { display: flex !important; }
+}
+@media (min-width: 1025px) { .mobile-toggle { display: none !important; } }
+@media (max-width: 640px) {
+  .main-content { padding: 18px 16px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .result-details { grid-template-columns: 1fr; }
+  .header-right .header-btn span { display: none; }
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="app-container">
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <div class="logo-icon"><i class="fas fa-calculator"></i></div>
+      <div>
+        <div class="header-title">计费平台</div>
+        <div class="header-subtitle">Engineering Fee Calculator</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <select class="theme-select" id="themeSelect" onchange="changeTheme(this.value)">
+        <option value="default">经典暖色</option>
+        <option value="deep-blue">现代深蓝</option>
+        <option value="golden">金色主题</option>
+        <option value="purple">现代紫色</option>
+      </select>
+      <button class="header-btn" onclick="showFavorites()"><i class="fas fa-star"></i> <span>收藏</span></button>
+      <button class="header-btn" onclick="showHistory()"><i class="fas fa-clock-rotate-left"></i> <span>历史</span></button>
+      <button class="header-btn" onclick="showHelp()"><i class="fas fa-circle-question"></i> <span>帮助</span></button>
+      <button class="header-btn" onclick="toggleAIChat()" style="color:var(--accent)"><i class="fas fa-robot"></i> <span>问答</span></button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-item active" data-page="home" onclick="switchPage('home')"><i class="fas fa-house"></i> 首页</div>
+    <div style="border-top:1px solid rgba(255,255,255,0.1);margin:8px 12px"></div>
+    <div class="nav-item" data-page="asset" onclick="switchPage('asset')"><i class="fas fa-gem"></i> 资产评估</div>
+    <div class="nav-item" data-page="realEstate" onclick="switchPage('realEstate')"><i class="fas fa-building"></i> 房地产估价</div>
+    <div class="nav-item" data-page="land" onclick="switchPage('land')"><i class="fas fa-mountain-sun"></i> 土地估价</div>
+    <div class="nav-item" data-page="socialStability" onclick="switchPage('socialStability')"><i class="fas fa-shield-halved"></i> 社稳风险评估</div>
+    <div class="nav-item" data-page="tender" onclick="switchPage('tender')"><i class="fas fa-gavel"></i> 招标代理</div>
+    <div class="nav-item" data-page="feasibility" onclick="switchPage('feasibility')"><i class="fas fa-file-lines"></i> 项目可研</div>
+    <div class="nav-item" data-page="engineeringDesign" onclick="switchPage('engineeringDesign')"><i class="fas fa-compass-drafting"></i> 工程设计</div>
+    <div class="nav-item" data-page="managementFee" onclick="switchPage('managementFee')"><i class="fas fa-briefcase"></i> 建设单位管理费</div>
+    <div class="nav-item" data-page="supervision" onclick="switchPage('supervision')"><i class="fas fa-hard-hat"></i> 工程监理</div>
+    <div class="nav-item" data-page="wholeProcess" onclick="switchPage('wholeProcess')"><i class="fas fa-chart-line"></i> 全过程造价咨询</div>
+    <div class="nav-item" data-page="audit" onclick="switchPage('audit')"><i class="fas fa-magnifying-glass-dollar"></i> 审计收费</div>
+    <div class="nav-item" data-page="performancePPP" onclick="switchPage('performancePPP')"><i class="fas fa-chart-pie"></i> 绩效评价(PPP)</div>
+    <div class="nav-item" data-page="performanceFinance" onclick="switchPage('performanceFinance')"><i class="fas fa-coins"></i> 绩效评价(财务)</div>
+    <div class="nav-item" data-page="ppp" onclick="switchPage('ppp')"><i class="fas fa-handshake"></i> PPP咨询</div>
+    <div class="nav-item" data-page="summary" onclick="switchPage('summary')"><i class="fas fa-layer-group"></i> 费用汇总 <span class="nav-badge">ALL</span></div>
+    <div style="border-top:1px solid rgba(255,255,255,0.1);margin:8px 12px"></div>
+    <div class="nav-item" data-page="refFiles" onclick="switchPage('refFiles')"><i class="fas fa-folder-open"></i> 依据文件</div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="mainContent"></main>
+</div>
+
+<!-- AI问答面板 -->
+<div class="ai-chat-panel" id="aiChatPanel">
+  <div class="ai-chat-header">
+    <h3><i class="fas fa-robot"></i> 智能问答</h3>
+    <button class="ai-chat-close" onclick="toggleAIChat()"><i class="fas fa-xmark"></i></button>
+  </div>
+  <div class="ai-chat-messages" id="aiChatMessages"></div>
+  <div class="ai-chat-suggestions" id="aiSuggestions">
+    <button class="ai-suggest-btn" onclick="aiAsk('监理怎么收费')">监理怎么收费</button>
+    <button class="ai-suggest-btn" onclick="aiAsk('什么是差额定率累进法')">差额定率累进法</button>
+    <button class="ai-suggest-btn" onclick="aiAsk('审计有哪些类型')">审计类型</button>
+    <button class="ai-suggest-btn" onclick="aiAsk('怎么导出Excel')">导出Excel</button>
+    <button class="ai-suggest-btn" onclick="aiAsk('全过程造价咨询有哪些服务')">全过程造价服务</button>
+  </div>
+  <div class="ai-chat-input">
+    <input type="text" id="aiInput" placeholder="输入问题，如：监理怎么收费" onkeydown="if(event.key==='Enter')aiSend()">
+    <button onclick="aiSend()">发送</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ==================== GLOBAL STATE ====================
+let currentPage = 'asset';
+let hist = JSON.parse(localStorage.getItem('fee_history') || '[]');
+let favs = JSON.parse(localStorage.getItem('fee_favorites') || '[]');
+
+// ==================== UTILITY FUNCTIONS ====================
+const R2 = n => n;
+const R4 = n => Math.round(n * 10000) / 10000;
+const fmt = (n, d = 10) => Number(n).toLocaleString('zh-CN', { minimumFractionDigits: 0, maximumFractionDigits: d });
+const fmtW = n => fmt(n) + ' 万元';
+
+function progressiveCalc(base, brackets) {
+  let total = 0, remaining = base, prev = 0;
+  for (let b of brackets) {
+    if (remaining <= 0) break;
+    let span = b.max === Infinity ? Infinity : b.max - prev;
+    let amount = Math.min(remaining, span);
+    total += amount * b.rate / 1000;
+    remaining -= amount;
+    prev = b.max;
+  }
+  return total;
+}
+
+function progressiveCalcDetails(base, brackets) {
+  let total = 0, remaining = base, prev = 0, details = [];
+  for (let b of brackets) {
+    if (remaining <= 0) break;
+    let span = b.max === Infinity ? Infinity : b.max - prev;
+    let amount = Math.min(remaining, span);
+    let partFee = amount * b.rate / 1000;
+    total += partFee;
+    details.push({
+      range: b.max === Infinity ? `${prev}以上` : `${prev}~${b.max}`,
+      amount: R2(amount),
+      rate: b.rate + '‰',
+      fee: R2(partFee)
+    });
+    remaining -= amount;
+    prev = b.max;
+  }
+  return { total: R2(total), details };
+}
+
+function linearInterp(x, table) {
+  if (x <= table[0][0]) return table[0][1];
+  if (x >= table[table.length - 1][0]) return table[table.length - 1][1];
+  for (let i = 0; i < table.length - 1; i++) {
+    if (x >= table[i][0] && x <= table[i + 1][0]) {
+      let r = (x - table[i][0]) / (table[i + 1][0] - table[i][0]);
+      return table[i][1] + r * (table[i + 1][1] - table[i][1]);
+    }
+  }
+  return table[table.length - 1][1];
+}
+
+// ==================== UI FUNCTIONS ====================
+function switchPage(p) {
+  currentPage = p;
+  document.querySelectorAll('.page-section').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+  let s = document.getElementById('page-' + p);
+  if (s) s.classList.add('active');
+  let n = document.querySelector(`.nav-item[data-page="${p}"]`);
+  if (n) n.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  if (p === 'refFiles') loadRefFiles();
+}
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+function loadRefFiles() {
+  let list = document.getElementById('ref-file-list');
+  if (!list) return;
+  // 检查是否有GitHub配置
+  let ghConfig = localStorage.getItem('fee_gh_repo');
+  if (ghConfig) {
+    loadFromGitHub(ghConfig, list);
+  } else {
+    loadFromLocal(list);
+  }
+}
+
+function loadFromLocal(list) {
+  list.innerHTML = '<div class="ref-empty"><i class="fas fa-spinner fa-spin"></i><p>正在加载文件列表...</p></div>';
+  fetch('/api/ref-files?t=' + Date.now()).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(files => {
+    if (!files.length) {
+      list.innerHTML = '<div class="ref-empty"><i class="fas fa-folder-open"></i><p>暂无依据文件</p><p style="font-size:0.8rem;margin-top:6px">请将文件放入程序目录下的 "依据文件" 文件夹</p></div>';
+      return;
+    }
+    renderFileList(list, files.map(f => ({ name: f.name, size: f.size, time: f.time, url: '/ref/' + encodeURIComponent(f.name) })));
+  }).catch(() => {
+    list.innerHTML = '<div class="ref-empty"><i class="fas fa-exclamation-triangle"></i><p>本地服务未启动</p><p style="font-size:0.8rem;margin-top:6px">请通过启动脚本访问，或配置GitHub仓库</p></div>' + ghConfigUI();
+  });
+}
+
+function loadFromGitHub(repo, list) {
+  list.innerHTML = '<div class="ref-empty"><i class="fas fa-spinner fa-spin"></i><p>正在从GitHub加载...</p></div>';
+  // repo格式: owner/repo 或 owner/repo/folder
+  let parts = repo.replace(/^https:\/\/github\.com\//, '').split('/');
+  let owner = parts[0], repoName = parts[1], folder = parts.slice(2).join('/') || '依据文件';
+  let apiUrl = `https://api.github.com/repos/${owner}/${repoName}/contents/${folder}`;
+  fetch(apiUrl).then(r => {
+    if (!r.ok) throw new Error('GitHub API ' + r.status);
+    return r.json();
+  }).then(items => {
+    if (!Array.isArray(items) || !items.length) {
+      list.innerHTML = '<div class="ref-empty"><i class="fas fa-folder-open"></i><p>暂无依据文件</p></div>';
+      return;
+    }
+    let files = items.filter(i => i.type === 'file').map(i => ({
+      name: i.name,
+      size: i.size,
+      time: new Date(i.updated_at).toLocaleDateString('zh-CN'),
+      url: i.download_url
+    }));
+    renderFileList(list, files);
+  }).catch(e => {
+    list.innerHTML = '<div class="ref-empty"><i class="fas fa-exclamation-triangle"></i><p>GitHub加载失败：' + e.message + '</p><p style="font-size:0.8rem;margin-top:6px">请检查仓库地址是否正确，或切换到本地模式</p></div>' + ghConfigUI();
+  });
+}
+
+function renderFileList(list, files) {
+  list.innerHTML = files.map(f => {
+    let ext = f.name.split('.').pop().toLowerCase();
+    let iconMap = { pdf: 'fa-file-pdf', doc: 'fa-file-word', docx: 'fa-file-word', xls: 'fa-file-excel', xlsx: 'fa-file-excel', jpg: 'fa-file-image', jpeg: 'fa-file-image', png: 'fa-file-image', gif: 'fa-file-image', bmp: 'fa-file-image', webp: 'fa-file-image' };
+    let icon = iconMap[ext] || 'fa-file';
+    let size = f.size < 1024 ? f.size + ' B' : f.size < 1048576 ? (f.size/1024).toFixed(1) + ' KB' : (f.size/1048576).toFixed(1) + ' MB';
+    return `<div class="ref-file-item">
+      <div class="ref-file-icon ${ext}"><i class="fas ${icon}"></i></div>
+      <div class="ref-file-info"><div class="ref-file-name" title="${f.name}">${f.name}</div><div class="ref-file-meta">${size} · ${f.time}</div></div>
+      <a class="ref-file-dl" href="${f.url}" download="${f.name}" target="_blank" title="下载"><i class="fas fa-download"></i></a>
+    </div>`;
+  }).join('');
+}
+
+function ghConfigUI() {
+  let saved = localStorage.getItem('fee_gh_repo') || '';
+  return `<div style="margin-top:16px;padding:14px;border:1px solid var(--border);border-radius:8px;background:var(--bg-secondary)">
+    <div style="font-size:0.82rem;font-weight:600;color:var(--text-primary);margin-bottom:8px"><i class="fab fa-github"></i> 配置GitHub仓库</div>
+    <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:8px">格式：用户名/仓库名/文件夹路径（如：tonghua/fee-files/依据文件）</div>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="ghRepoInput" value="${saved}" placeholder="用户名/仓库名/依据文件" style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg-card);color:var(--text-primary);font-size:0.82rem;outline:none">
+      <button class="btn btn-primary" onclick="saveGhConfig()" style="padding:8px 14px;font-size:0.82rem">保存</button>
+    </div>
+  </div>`;
+}
+
+function saveGhConfig() {
+  let v = document.getElementById('ghRepoInput').value.trim();
+  if (v) { localStorage.setItem('fee_gh_repo', v); showToast('GitHub仓库已配置'); loadRefFiles(); }
+  else { localStorage.removeItem('fee_gh_repo'); showToast('已切换到本地模式'); loadRefFiles(); }
+}
+
+function changeTheme(t) {
+  if (t === 'default') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('fee_theme', t);
+}
+
+function showToast(m, t = 'success') {
+  let c = document.getElementById('toastContainer'), e = document.createElement('div');
+  e.className = 'toast ' + t;
+  e.innerHTML = `<i class="fas fa-${t === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${m}`;
+  c.appendChild(e);
+  setTimeout(() => { e.style.opacity = '0'; e.style.transform = 'translateX(20px)'; setTimeout(() => e.remove(), 300); }, 2500);
+}
+
+function openModal(t, h) {
+  document.getElementById('modalTitle').textContent = t;
+  document.getElementById('modalBody').innerHTML = h;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
+document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+function showResult(id, html) {
+  let p = document.getElementById('result-' + id);
+  p.innerHTML = html;
+  p.classList.add('show');
+  p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function rH(t) { return `<div class="result-title"><i class="fas fa-chart-column"></i> ${t}<button class="btn-export" onclick="exportExcel(this)" title="导出Excel"><i class="fas fa-file-excel"></i> 导出Excel</button></div>`; }
+function rA(a) { return `<div class="result-amount">${fmt(a)}<span class="unit">万元</span></div>`; }
+function rD(items) {
+  let h = '<div class="result-details">';
+  for (let i of items) h += `<div class="result-item"><div class="result-item-label">${i[0]}</div><div class="result-item-value">${i[1]}</div></div>`;
+  return h + '</div>';
+}
+function rB(t, txt) { return `<div class="result-breakdown"><div class="result-breakdown-title">${t}</div><pre>${txt}</pre></div>`; }
+
+function exportExcel(btn) {
+  let panel = btn.closest('.result-panel');
+  let title = panel.querySelector('.result-title').childNodes[1].textContent.trim();
+  let amount = panel.querySelector('.result-amount') ? panel.querySelector('.result-amount').textContent.trim().replace('万元', '').trim() : '';
+  let params = [];
+  panel.querySelectorAll('.result-item').forEach(item => {
+    let label = item.querySelector('.result-item-label').textContent.trim();
+    let value = item.querySelector('.result-item-value').textContent.trim();
+    params.push(label + '：' + value);
+  });
+  let newRow = [title, params.join('；'), amount + ' 万元'];
+  let data = JSON.parse(localStorage.getItem('feeExportData') || '[]');
+  data.push(newRow);
+  localStorage.setItem('feeExportData', JSON.stringify(data));
+  let rows = [['类别', '参数', '计算结果']];
+  data.forEach(r => rows.push(r));
+  let wb = XLSX.utils.book_new();
+  let ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{ wch: 25 }, { wch: 60 }, { wch: 18 }];
+  XLSX.utils.book_append_sheet(wb, ws, '费用计算');
+  XLSX.writeFile(wb, '费用计算汇总.xlsx');
+  showToast('已导出，共 ' + data.length + ' 条记录');
+}
+
+function addHist(pn, r) {
+  hist.unshift({ time: new Date().toLocaleString('zh-CN'), page: pn, result: r });
+  if (hist.length > 50) hist = hist.slice(0, 50);
+  localStorage.setItem('fee_history', JSON.stringify(hist));
+}
+
+function showHistory() {
+  let h = '';
+  if (!hist.length) h = '<div class="empty-state"><i class="fas fa-clock-rotate-left"></i><p>暂无历史记录</p></div>';
+  else for (let i = 0; i < Math.min(hist.length, 20); i++) {
+    let x = hist[i];
+    h += `<div class="list-item"><div class="list-item-icon"><i class="fas fa-clock-rotate-left"></i></div><div class="list-item-content"><div class="list-item-title">${x.page}</div><div class="list-item-meta">${x.time}</div></div><div class="list-item-amount">${x.result}</div></div>`;
+  }
+  openModal('历史记录', h + `<div class="btn-group" style="margin-top:14px"><button class="btn btn-danger" onclick="hist=[];localStorage.removeItem('fee_history');closeModal();showToast('已清空')"><i class="fas fa-trash"></i> 清空记录</button></div>`);
+}
+
+const MODULE_NAMES = {
+  asset: '资产评估', realEstate: '房地产估价', land: '土地估价',
+  socialStability: '社稳风险评估', tender: '招标代理', feasibility: '项目可研',
+  engineeringDesign: '工程设计', managementFee: '建设单位管理费', supervision: '工程监理',
+  wholeProcess: '全过程造价咨询', audit: '审计收费',
+  performancePPP: '绩效评价(PPP)', performanceFinance: '绩效评价(财务)', ppp: 'PPP咨询'
+};
+
+function addFav(page) {
+  let inputs = document.querySelectorAll(`#page-${page} .form-input, #page-${page} .form-select`);
+  let params = {};
+  inputs.forEach(inp => { if (inp.id) { let k = inp.id.replace(page + '-', ''); params[k] = inp.value; } });
+  favs.push({ page, name: MODULE_NAMES[page] || page, params, time: new Date().toLocaleString('zh-CN') });
+  localStorage.setItem('fee_favorites', JSON.stringify(favs));
+  showToast('参数已收藏');
+}
+
+function showFavorites() {
+  let h = '';
+  if (!favs.length) h = '<div class="empty-state"><i class="fas fa-star"></i><p>暂无收藏</p></div>';
+  else for (let i = favs.length - 1; i >= 0; i--) {
+    let f = favs[i];
+    let ps = Object.entries(f.params).map(([k, v]) => `${k}=${v}`).join(', ');
+    h += `<div class="list-item"><div class="list-item-icon"><i class="fas fa-star"></i></div><div class="list-item-content"><div class="list-item-title">${f.name}</div><div class="list-item-meta">${ps}</div></div><div class="list-item-actions"><button title="应用" onclick="applyFav(${i})"><i class="fas fa-check"></i></button><button class="delete-btn" title="删除" onclick="favs.splice(${i},1);localStorage.setItem('fee_favorites',JSON.stringify(favs));showFavorites();showToast('已删除')"><i class="fas fa-trash"></i></button></div></div>`;
+  }
+  openModal('收藏参数', h);
+}
+
+function applyFav(idx) {
+  let f = favs[idx];
+  switchPage(f.page);
+  setTimeout(() => {
+    for (let [k, v] of Object.entries(f.params)) {
+      let el = document.getElementById(f.page + '-' + k);
+      if (el) { el.value = v; el.dispatchEvent(new Event('change')); }
+    }
+    showToast('已应用收藏参数'); closeModal();
+  }, 100);
+}
+
+function clearInputs(page) {
+  document.querySelectorAll(`#page-${page} .form-input`).forEach(inp => {
+    if (inp.type === 'number') inp.value = inp.id.includes('discount') ? '1' : '0';
+  });
+  let p = document.getElementById('result-' + page);
+  if (p) { p.classList.remove('show'); p.innerHTML = ''; }
+}
+
+function showHelp() {
+  openModal('使用帮助', `<div class="help-section"><h3>基本操作</h3><ul><li>左侧导航栏选择计费模块</li><li>填写计费参数后点击"计算费用"</li><li>计算结果自动保存到历史记录</li><li>点击"收藏参数"可保存当前输入值</li></ul></div><div class="help-section"><h3>主题切换</h3><p>右上角主题选择器支持4种配色方案：经典暖色、现代深蓝、金色主题、现代紫色</p></div><div class="help-section"><h3>计费方法</h3><ul><li><strong>差额定率累进法</strong>：各档分段金额 x 对应费率之和</li><li><strong>线性插值法</strong>：在费率表区间内线性插值</li><li><strong>分段递减费率</strong>：不同区间使用不同基础费用</li><li><strong>固定费率法</strong>：基数 x 固定费率</li></ul></div>`);
+}
+
+// ==================== PAGE BUILDER ====================
+function mkCollapsible(title, icon, content) {
+  let uid = 'col_' + Math.random().toString(36).substr(2, 8);
+  return `<div style="margin-bottom:18px"><div class="collapsible-header" onclick="toggleCollapsible('${uid}')"><h3><i class="fas fa-${icon}"></i> ${title}</h3><i class="fas fa-chevron-down collapsible-arrow" id="arrow_${uid}"></i></div><div class="collapsible-body" id="body_${uid}">${content}</div></div>`;
+}
+
+function toggleCollapsible(uid) {
+  document.getElementById('body_' + uid).classList.toggle('open');
+  document.getElementById('arrow_' + uid).classList.toggle('open');
+}
+
+function mkPage(id, title, desc, inputs, formulaContent, extra = '') {
+  let fh = inputs.map(i => {
+    if (i.type === 'select') return `<div class="form-group"><label class="form-label">${i.label}</label><select class="form-select" id="${id}-${i.key}" ${i.onChange || ''}>${i.options.map(o => `<option value="${o.value}"${o.selected ? ' selected' : ''}>${o.text}</option>`).join('')}</select>${i.hint ? `<span class="form-hint">${i.hint}</span>` : ''}</div>`;
+    return `<div class="form-group"><label class="form-label">${i.label}</label><input type="number" class="form-input" id="${id}-${i.key}" value="${i.value}" step="${i.step || '0.01'}" ${i.min !== undefined ? 'min="' + i.min + '"' : ''} ${i.max !== undefined ? 'max="' + i.max + '"' : ''}>${i.hint ? `<span class="form-hint">${i.hint}</span>` : ''}</div>`;
+  }).join('');
+  return `<div class="page-section" id="page-${id}"><div class="page-header"><div class="page-title">${title}</div></div>${formulaContent}<div class="card"><div class="card-title"><i class="fas fa-sliders"></i> 计费参数</div><div class="form-grid">${fh}</div>${extra}<div class="btn-group"><button class="btn btn-primary" onclick="calc_${id}()"><i class="fas fa-calculator"></i> 计算费用</button><button class="btn btn-secondary" onclick="addFav('${id}')"><i class="fas fa-star"></i> 收藏参数</button><button class="btn btn-danger" onclick="clearInputs('${id}')"><i class="fas fa-eraser"></i> 清除</button></div></div><div class="result-panel" id="result-${id}"></div></div>`;
+}
+
+function mkRT(headers, rows, hint = '') {
+  let h = `<div class="rate-table-wrapper"><table class="rate-table"><thead><tr>${headers.map(x => '<th>' + x + '</th>').join('')}</tr></thead><tbody>`;
+  rows.forEach(r => { h += '<tr>' + r.map((c, ci) => `<td${ci > 0 ? ' class="hl"' : ''}>${c}</td>`).join('') + '</tr>'; });
+  h += `</tbody></table></div>${hint ? `<div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted)">${hint}</div>` : ''}`;
+  return h;
+}
+
+// ==================== BUILD ALL PAGES ====================
+const MC = document.getElementById('mainContent');
+MC.innerHTML = [
+
+// ==================== 首页仪表盘 ====================
+`<div class="page-section" id="page-home">
+  <div style="text-align:center;padding:50px 20px 30px">
+    <div style="font-size:2.8rem;margin-bottom:16px">📊</div>
+    <h1 style="font-size:1.6rem;font-weight:800;color:var(--accent);margin:0 0 8px">工程咨询服务费用计算平台</h1>
+    <p style="font-size:0.95rem;color:var(--text-secondary);margin:0">涵盖评估、咨询、审计、绩效等 15 大模块，快速准确计算服务费用</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin:0 0 24px">
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('asset')">
+      <div style="font-size:1.5rem;margin-bottom:8px">💎</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">资产评估</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">差额定率累进法</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('realEstate')">
+      <div style="font-size:1.5rem;margin-bottom:8px">🏢</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">房地产估价</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">差额定率累进法</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('land')">
+      <div style="font-size:1.5rem;margin-bottom:8px">🏔️</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">土地估价</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">差额定率累进法</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('socialStability')">
+      <div style="font-size:1.5rem;margin-bottom:8px">🛡️</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">社稳风险评估</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">分段基价法</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('tender')">
+      <div style="font-size:1.5rem;margin-bottom:8px">🔨</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">招标代理</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">货物/服务/工程</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('feasibility')">
+      <div style="font-size:1.5rem;margin-bottom:8px">📋</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">项目可研</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">线性插值法</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('engineeringDesign')">
+      <div style="font-size:1.5rem;margin-bottom:8px">📐</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">工程设计</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">插值+系数调整</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('managementFee')">
+      <div style="font-size:1.5rem;margin-bottom:8px">💼</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">建设单位管理费</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">差额定率累进法</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('supervision')">
+      <div style="font-size:1.5rem;margin-bottom:8px">👷</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">工程监理</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">插值+系数调整</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('wholeProcess')">
+      <div style="font-size:1.5rem;margin-bottom:8px">📈</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">全过程造价咨询</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">30+种服务类型</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('audit')">
+      <div style="font-size:1.5rem;margin-bottom:8px">🔍</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">审计收费</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">7种审计类型</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('performancePPP')">
+      <div style="font-size:1.5rem;margin-bottom:8px">📊</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">绩效评价(PPP)</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">分段基价法</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('performanceFinance')">
+      <div style="font-size:1.5rem;margin-bottom:8px">🪙</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">绩效评价(财务)</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">阶梯+系数法</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('ppp')">
+      <div style="font-size:1.5rem;margin-bottom:8px">🤝</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">PPP咨询</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">4项子服务</div>
+    </div>
+    <div class="card" style="padding:18px;text-align:center;cursor:pointer" onclick="switchPage('summary')">
+      <div style="font-size:1.5rem;margin-bottom:8px">📊</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary)">费用汇总</div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">一键计算所有模块</div>
+    </div>
+  </div>
+  <div class="card" style="padding:20px;text-align:center">
+    <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.8">
+      💡 <strong>使用提示</strong>：选择左侧模块 → 输入参数 → 点击计算 → 查看明细 → 导出Excel<br>
+      🤖 有问题？点击顶部 <strong>"问答"</strong> 按钮向智能助手提问
+    </div>
+  </div>
+</div>`,
+
+// ==================== 1. 资产评估 ====================
+mkPage('asset', '资产评估',
+  '依据：山西省资产评估收费标准（晋价服字[2013]203号） · 差额定率累进法',
+  [
+    { label: '计费基数（万元）', key: 'base' },
+    { label: '折扣（0~1）', key: 'discount', value: 0.45, min: 0, max: 1 },
+    { label: '增值税率（%）', key: 'tax', value: 6 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">差额定率累进法</span><br>最终费用 = 累进计算费用 × 折扣系数<br>含税金额 = 不含税金额 × (1 + 增值税率/100)</div>` +
+    mkRT(['计费基数区间（万元）', '费率'], [
+      ['100及以下', '12‰'], ['100～1000', '4.8‰'], ['1000～5000', '1.2‰'],
+      ['5000～10000', '0.8‰'], ['10000～100000', '0.15‰'], ['100000以上', '0.1‰']
+    ])
+  )),
+
+// ==================== 2. 房地产估价 ====================
+mkPage('realEstate', '房地产估价',
+  '依据：计价格[1995]971号 · 差额定率累进法 · 最低收费2000元',
+  [
+    { label: '估价结果（万元）', key: 'base' },
+    { label: '折扣（0~1）', key: 'discount', value: 0.12, min: 0, max: 1 },
+    { label: '增值税率（%）', key: 'tax', value: 6 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">差额定率累进法</span><br>最低收费：<span class="var">2000元</span>（0.2万元）<br>含税金额 = 不含税金额 × (1 + 增值税率/100)</div>` +
+    mkRT(['估价结果（万元）', '费率'], [
+      ['100及以下', '5‰'], ['100～1000', '2.5‰'], ['1000～2000', '1.5‰'],
+      ['2000～5000', '0.8‰'], ['5000～8000', '0.4‰'], ['8000～10000', '0.2‰'], ['10000以上', '0.1‰']
+    ])
+  )),
+
+// ==================== 3. 土地估价 ====================
+mkPage('land', '土地估价',
+  '差额定率累进法 · 最低收费2000元',
+  [
+    { label: '估价结果（万元）', key: 'base' },
+    { label: '折扣（0~1）', key: 'discount', value: 1, min: 0, max: 1 },
+    { label: '增值税率（%）', key: 'tax', value: 6 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">差额定率累进法</span><br>最低收费：<span class="var">2000元</span>（0.2万元）<br>含税金额 = 不含税金额 × (1 + 增值税率/100)</div>` +
+    mkRT(['估价结果（万元）', '费率'], [
+      ['100及以下', '4‰'], ['100～200', '3‰'], ['200～1000', '2‰'],
+      ['1000～2000', '1.5‰'], ['2000～5000', '0.8‰'], ['5000～10000', '0.4‰'], ['10000以上', '0.1‰']
+    ])
+  )),
+
+// ==================== 4. 社稳风险评估 ====================
+mkPage('socialStability', '社会稳定风险评估',
+  '分段递减费率 · 支持调整系数',
+  [
+    { label: '投资规模（万元）', key: 'base' },
+    { label: '调整系数', key: 'adj', value: 1, hint: '事项类别 x 机构考核 x 行业调整' },
+    { label: '折扣（0~1）', key: 'discount', value: 1, min: 0, max: 1 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">分段累进</span><br>最终费用 = 基础费用 × 调整系数 × 折扣</div>` +
+    mkRT(['投资额区间（万元）', '费用计算'], [
+      ['10000及以下', '固定 30 万元'],
+      ['10000～50000', '30 + (超出10000部分) x 0.125%'],
+      ['50000～100000', '上档结果 + (超出50000部分) x 0.1%'],
+      ['100000以上', '上档结果 + (超出100000部分) x 0.08%']
+    ])
+  )),
+
+// ==================== 5. 招标代理 ====================
+mkPage('tender', '招标代理',
+  '依据：发改价格[2011]534号 · 差额定率累进法',
+  [
+    { label: '中标金额（万元）', key: 'base' },
+    { label: '服务类型', key: 'type', type: 'select', options: [
+      { value: 'goods', text: '货物招标' }, { value: 'service', text: '服务招标' }, { value: 'engineering', text: '工程招标' }
+    ]},
+    { label: '折扣（0~1）', key: 'discount', value: 1, min: 0, max: 1 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">差额定率累进法</span><br>最终费用 = min(累进费用, 最高限额) × 折扣</div>` +
+    mkRT(['中标金额（万元）', '货物招标', '服务招标', '工程招标'], [
+      ['100以下', '1.5%', '1.5%', '1.0%'], ['100～500', '1.1%', '0.8%', '0.7%'],
+      ['500～1000', '0.8%', '0.45%', '0.55%'], ['1000～5000', '0.5%', '0.25%', '0.35%'],
+      ['5000～10000', '0.25%', '0.1%', '0.2%'], ['10000～100000', '0.05%', '0.05%', '0.05%'],
+      ['100000以上', '0.01%', '0.01%', '0.01%']
+    ], '最高限额：货物360万 | 服务400万 | 工程450万')
+  )),
+
+// ==================== 6. 项目可研 ====================
+mkPage('feasibility', '项目可研',
+  '线性插值法 · 支持行业调整系数和复杂程度系数',
+  [
+    { label: '估算投资额（万元）', key: 'base' },
+    { label: '服务类型', key: 'type', type: 'select', options: [
+      { value: 'proposal', text: '编制项目建议书' }, { value: 'report', text: '编制可行性研究报告', selected: true },
+      { value: 'evalProposal', text: '评估项目建议书' }, { value: 'evalReport', text: '评估可行性研究报告' }
+    ]},
+    { label: '行业调整系数', key: 'industry', value: 1, min: 0.7, max: 1.3 },
+    { label: '复杂程度系数', key: 'complexity', value: 1, min: 0.8, max: 1.2 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">线性插值法</span><br>基价 = 下限 + (上限 - 下限) x (投资额 - 区间下限) / (区间上限 - 区间下限)<br>最终费用 = 基价 × 行业系数 × 复杂程度系数</div>` +
+    mkRT(['投资额（万元）', '编制建议书', '编制可研', '评估建议书', '评估可研'], [
+      ['0～1000', '1.5～2.5', '3.0～5.0', '0.8～1.7', '1.4～2.4'],
+      ['1000～3000', '2.5～6.0', '5.0～12.0', '1.7～4.0', '2.4～5.0'],
+      ['3000～10000', '6～14', '12～28', '4～8', '5～10'],
+      ['10000～50000', '14～37', '28～75', '8～12', '10～15'],
+      ['50000～100000', '37～55', '75～110', '12～15', '15～20'],
+      ['100000～500000', '55～100', '110～200', '15～17', '20～25'],
+      ['500000以上', '100～125', '200～250', '17～20', '25～35']
+    ])
+  )),
+
+// ==================== 7. 工程设计 ====================
+mkPage('engineeringDesign', '工程设计',
+  '线性插值法 · 支持专业调整/工程复杂程度/附加调整系数',
+  [
+    { label: '计费额/建安费用（万元）', key: 'base' },
+    { label: '浮动幅度值（±20%）', key: 'floatVal', value: 0, step: 1 },
+    { label: '其他设计收费（万元）', key: 'other' },
+    { label: '专业调整系数', key: 'pro', value: 1 },
+    { label: '工程复杂程度调整系数', key: 'complex', value: 1 },
+    { label: '附加调整系数', key: 'extra', value: 1 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">线性插值法</span><br>基本设计收费 = 基价(插值) × 专业调整系数 × 工程复杂程度调整系数 × 附加调整系数<br>基准价 = 基本设计收费 + 其他设计收费<br>最终费用 = 基准价 × (1 ± 浮动幅度%)</div>` +
+    mkRT(['计费额（万元）', '收费基价（万元）'], [
+      ['200', '9.0'], ['500', '20.9'], ['1000', '38.8'], ['3000', '103.8'],
+      ['5000', '163.9'], ['8000', '249.6'], ['10000', '304.8'], ['20000', '566.8'],
+      ['40000', '1054'], ['60000', '1515.2'], ['80000', '1960.1'], ['100000', '2393.4'],
+      ['200000', '4450.8'], ['400000', '8276.7'], ['600000', '11897.5'],
+      ['800000', '15391.4'], ['1000000', '18793.8'], ['2000000', '34948.9']
+    ], '超过2000000万元：收费基价 = 计费额 x 1.6%')
+  )),
+
+// ==================== 8. 建设单位管理费 ====================
+mkPage('managementFee', '建设单位管理费',
+  '分段费率法',
+  [
+    { label: '工程总概算（万元）', key: 'base' },
+    { label: '服务年限（年）', key: 'years', value: 1, step: 1, min: 1 },
+    { label: '折扣（0~1）', key: 'discount', value: 1, min: 0, max: 1 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">差额定率累进法</span><br>最终费用 = 累进费用 × 年限 × 折扣</div>` +
+    mkRT(['工程总概算（万元）', '费率'], [
+      ['200及以下', '1.46%'], ['200～500', '1.06%'], ['500～2000', '0.79%'],
+      ['2000～5000', '0.53%'], ['5000～10000', '0.40%'], ['10000～50000', '0.26%'], ['50000以上', '0.20%']
+    ])
+  )),
+
+// ==================== 9. 工程监理 ====================
+mkPage('supervision', '工程监理',
+  '线性插值法 · 支持专业/复杂程度/高程调整系数',
+  [
+    { label: '计费额/建安工程费（万元）', key: 'base' },
+    { label: '浮动幅度值（±20%）', key: 'floatVal', value: 0, step: 1 },
+    { label: '专业调整系数', key: 'pro', value: 1 },
+    { label: '工程复杂程度调整系数', key: 'complex', value: 1 },
+    { label: '高程调整系数', key: 'altitude', value: 1 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">线性插值法</span><br>基准价 = 基价(插值) × 专业调整系数 × 工程复杂程度调整系数 × 高程调整系数<br>最终费用 = 基准价 × (1 ± 浮动幅度%)</div>` +
+    mkRT(['计费额（万元）', '收费基价（万元）'], [
+      ['500', '16.5'], ['1000', '30.1'], ['3000', '78.1'], ['5000', '120.8'],
+      ['8000', '181.0'], ['10000', '218.6'], ['20000', '393.4'], ['40000', '708.2'],
+      ['60000', '991.4'], ['80000', '1255.8'], ['100000', '1507.0'],
+      ['200000', '2712.5'], ['400000', '4882.6'], ['600000', '6835.6'],
+      ['800000', '8658.4'], ['1000000', '10390.1']
+    ], '超过1000000万元：收费基价 = 计费额 x 1.039%')
+  )),
+
+// ==================== 10. 全过程造价咨询 (SPECIAL) ====================
+`<div class="page-section" id="page-wholeProcess">
+  <div class="page-header">
+    <div class="page-title">全过程造价咨询</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-sliders"></i> 计费参数</div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">类别</label><select class="form-select" id="wholeProcess-category" onchange="onWPCatChange()"><option value="技术经济类">技术经济类</option><option value="经济评鉴类">经济评鉴类</option><option value="投资决策类">投资决策类</option><option value="管理服务类">管理服务类</option></select></div>
+      <div class="form-group"><label class="form-label">服务项目</label><select class="form-select" id="wholeProcess-service" onchange="onWPSvcChange()"></select></div>
+      <div class="form-group"><label class="form-label">核算基数（万元）</label><input type="number" class="form-input" id="wholeProcess-base" placeholder="请输入" step="0.01"><span class="form-hint" id="wpBaseHint">投资估算价（不含土地使用费）</span></div>
+      <div class="form-group"><label class="form-label">专业工程调整系数</label><input type="number" class="form-input" id="wholeProcess-proAdj" value="1.0" step="0.01"></div>
+      <div class="form-group"><label class="form-label">复杂程度调整系数</label><input type="number" class="form-input" id="wholeProcess-complexAdj" value="1.0" step="0.01"></div>
+      <div class="form-group"><label class="form-label">折扣（0~1）</label><input type="number" class="form-input" id="wholeProcess-discount" value="1" step="0.01" min="0" max="1"></div>
+    </div>
+    <div class="dynamic-fields" id="wpDynamic"><div class="form-grid" id="wpDynFields"></div></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="calc_wholeProcess()"><i class="fas fa-calculator"></i> 计算费用</button>
+      <button class="btn btn-secondary" onclick="addFav('wholeProcess')"><i class="fas fa-star"></i> 收藏参数</button>
+      <button class="btn btn-danger" onclick="clearInputs('wholeProcess')"><i class="fas fa-eraser"></i> 清除</button>
+    </div>
+  </div>
+  <div class="card" id="wpRateCard">
+    <div class="card-title"><i class="fas fa-table"></i> 费率表</div>
+    <div id="wpRateContent"></div>
+  </div>
+  <div class="result-panel" id="result-wholeProcess"></div>
+</div>`,
+
+// ==================== 11. 审计收费 (SPECIAL) ====================
+`<div class="page-section" id="page-audit">
+  <div class="page-header">
+    <div class="page-title">审计收费</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-sliders"></i> 计费参数</div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">审计类型</label><select class="form-select" id="audit-type" onchange="onAuditTypeChange()"><option value="accounting">会计报表审计</option><option value="gov">行政事业单位财务收支审计</option><option value="merge">企业合并、分立、清算</option><option value="responsibility">经济责任审计</option><option value="special_construction">专项审计（基本建设竣工财务决算等）</option><option value="special_hightech">专项审计（高新技术企业产品收入和研发费等）</option><option value="special_medical">专项审计（医疗卫生机构等非营利组织财务报表）</option></select></div>
+      <div class="form-group"><label class="form-label">资产总额（万元）</label><input type="number" class="form-input" id="audit-base" placeholder="请输入" step="0.01"></div>
+      <div class="form-group"><label class="form-label">折扣（0~1）</label><input type="number" class="form-input" id="audit-discount" value="1" step="0.01" min="0" max="1"></div>
+    </div>
+    <div class="dynamic-fields" id="auditDynamic"><div class="form-grid"><div class="form-group"><label class="form-label">费率选择</label><select class="form-select" id="audit-rate-select"><option value="2">千分之2</option><option value="3">千分之3</option></select></div></div></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="calc_audit()"><i class="fas fa-calculator"></i> 计算费用</button>
+      <button class="btn btn-secondary" onclick="addFav('audit')"><i class="fas fa-star"></i> 收藏参数</button>
+      <button class="btn btn-danger" onclick="clearInputs('audit')"><i class="fas fa-eraser"></i> 清除</button>
+    </div>
+  </div>
+  ${mkCollapsible('会计报表审计基础费率表', 'book',
+    mkRT(['资产总额区间', '收费标准'], [
+      ['100万及以下', '2000 元'], ['100～500万', '4000 元'], ['500～1000万', '7000 元'],
+      ['1000～3000万', '8000 元'], ['3000～5000万', '10000 元'],
+      ['5000万～1亿', '0.5‰'], ['1～3亿', '0.3‰'], ['3～5亿', '0.2‰'],
+      ['5～7亿', '0.1‰'], ['7～10亿', '0.08‰'], ['10亿以上', '0.05‰']
+    ])
+  )}
+  <div class="result-panel" id="result-audit"></div>
+</div>`,
+
+// ==================== 12. 绩效评价(PPP) ====================
+mkPage('performancePPP', '绩效评价（PPP）',
+  '分段递减费率 · 万元/年',
+  [
+    { label: '投资规模（万元）', key: 'base' },
+    { label: '调整系数', key: 'adj', value: 1 },
+    { label: '折扣（0~1）', key: 'discount', value: 1, min: 0, max: 1 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">分段累进</span>（同社会稳定风险评估）<br>最终费用 = 基础费用 × 调整系数 × 折扣</div>` +
+    mkRT(['投资额区间（万元）', '费用计算'], [
+      ['10000及以下', '固定 30 万元'],
+      ['10000～50000', '30 + (超出10000部分) x 0.125%'],
+      ['50000～100000', '上档结果 + (超出50000部分) x 0.1%'],
+      ['100000以上', '上档结果 + (超出100000部分) x 0.08%']
+    ])
+  )),
+
+// ==================== 13. 绩效评价(财务) ====================
+mkPage('performanceFinance', '绩效评价（财务）',
+  '分段固定费率 · 多系数调整',
+  [
+    { label: '预算金额（万元）', key: 'base' },
+    { label: '折扣（0~1）', key: 'discount', value: 1, min: 0, max: 1 },
+    { label: '项目类型系数', key: 'type', value: 1 },
+    { label: '工作环境系数', key: 'env', value: 1 },
+    { label: '工作区域系数', key: 'area', value: 1 },
+    { label: '行业专业技术系数', key: 'tech', value: 1 },
+    { label: '评价范围系数', key: 'scope', value: 1 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">阶梯固定费率</span><br>最终费用 = 基本费用 × (项目类型系数 × 工作环境系数 × 工作区域系数 × 行业系数 × 评价范围系数) × 折扣</div>` +
+    mkRT(['预算金额（万元）', '基本费用（万元）'], [
+      ['100及以下', '4'], ['100～1000', '8'], ['1000～5000', '12'],
+      ['5000～10000', '16'], ['10000以上', '25']
+    ])
+  )),
+
+// ==================== 14. PPP咨询 ====================
+mkPage('ppp', 'PPP咨询',
+  '依据：晋促[2018]26号 · 包含实施方案/物有所值/财政承受能力/合同编制',
+  [
+    { label: '项目投资规模（万元）', key: 'base' },
+    { label: '复杂项目调整系数', key: 'complex', value: 1, hint: '一般项目1.0，复杂项目1.2～1.4' },
+    { label: '折扣（0~1）', key: 'discount', value: 1, min: 0, max: 1 }
+  ],
+  mkCollapsible('计费公式与费率表', 'book',
+    `<div class="formula-box">计算方法：<span class="var">分项累加</span><br>1. 实施方案编制：≤1亿→40万, 1-5亿→1.0‰, 5-10亿→0.1‰, >10亿→0.02‰<br>2. 物有所值评价：≤5亿→12万, 5-10亿→插值(12,20), >10亿→20万<br>3. 财政承受能力论证：≤5亿→10万, 5-10亿→插值(10,18), >10亿→18万<br>4. 合同编制：实施方案编制费 × 45%<br>各项 × 复杂系数，合计 × 折扣</div>`
+  )),
+
+// ==================== 15. 费用汇总 ====================
+mkPage('summary', '费用汇总',
+  '一键计算全部模块费用，快速了解项目整体咨询费用构成',
+  [
+    { label: '项目总投资（万元）', key: 'base' },
+    { label: '统一折扣（0~1）', key: 'discount', value: 1, min: 0, max: 1 }
+  ],
+  mkCollapsible('汇总说明', 'book',
+    `<div class="formula-box">本模块使用<span class="var">项目总投资</span>作为统一计费基数，<br>以默认参数计算全部14个模块的费用。<br>全过程造价咨询以"投资估算编制或审核"为代表服务。<br>招标代理以"工程招标"为代表类型。</div>`
+  )),
+
+// ==================== 依据文件 ====================
+`<div class="page-section" id="page-refFiles">
+  <div class="page-header">
+    <div class="page-title">依据文件</div>
+    <div class="page-desc">将文件放入程序同目录下的"依据文件"文件夹，刷新页面即可查看</div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div id="ref-file-list" style="padding:8px 0"></div>
+  </div>
+</div>`
+
+].join('');
+
+// ==================== CALCULATION FUNCTIONS ====================
+
+// 1. 资产评估
+function calc_asset() {
+  let b = +document.getElementById('asset-base').value;
+  let d = +document.getElementById('asset-discount').value;
+  let t = +document.getElementById('asset-tax').value;
+  let res = progressiveCalcDetails(b, [
+    {max:100,rate:12},{max:1000,rate:4.8},{max:5000,rate:1.2},
+    {max:10000,rate:0.8},{max:100000,rate:0.15},{max:Infinity,rate:0.1}
+  ]);
+  let dd = R2(res.total * d);
+  let tx = R2(dd / (1 + t / 100) * (t / 100));
+  let nt = R2(dd - tx);
+  let r = fmtW(dd);
+  addHist('资产评估', r);
+  let bk = `差额定率累进法\n计费基数：${fmt(b)} 万元\n`;
+  res.details.forEach(d2 => { bk += `  ${d2.range}万元: 计费额 ${fmt(d2.amount)} 万, 费率 ${d2.rate}, 费用 ${fmt(d2.fee)} 万\n`; });
+  bk += `累进合计：${fmt(res.total)} 万元\n`;
+  if (d !== 1) bk += `× 折扣 ${(d * 100)}% = ${fmt(dd)} 万元\n`;
+  bk += `含税金额：${fmt(dd)} 万元\n增值税额(${t}%)：${fmt(tx)} 万元\n不含税金额：${fmt(nt)} 万元`;
+  showResult('asset', rH('资产评估计算结果') + rA(dd) +
+    rD([['计费基数', fmtW(b)], ['折扣', (d * 100) + '%'], ['含税金额', fmtW(dd)], ['增值税额', fmtW(tx)], ['不含税金额', fmtW(nt)]]) +
+    rB('计算明细', bk));
+}
+
+// 2. 房地产估价
+function calc_realEstate() {
+  let b = +document.getElementById('realEstate-base').value;
+  let d = +document.getElementById('realEstate-discount').value;
+  let t = +document.getElementById('realEstate-tax').value;
+  let res = progressiveCalcDetails(b, [
+    {max:100,rate:5},{max:1000,rate:2.5},{max:2000,rate:1.5},{max:5000,rate:0.8},
+    {max:8000,rate:0.4},{max:10000,rate:0.2},{max:Infinity,rate:0.1}
+  ]);
+  let f = Math.max(res.total, 0.2);
+  let dd = R2(f * d);
+  let tx = R2(dd / (1 + t / 100) * (t / 100));
+  let nt = R2(dd - tx);
+  let r = fmtW(dd);
+  addHist('房地产估价', r);
+  let bk = `差额定率累进法\n估价结果：${fmt(b)} 万元\n`;
+  res.details.forEach(d2 => { bk += `  ${d2.range}万元: 计费额 ${fmt(d2.amount)} 万, 费率 ${d2.rate}, 费用 ${fmt(d2.fee)} 万\n`; });
+  bk += `累进合计：${fmt(res.total)} 万元\n`;
+  if (f === 0.2) bk += `触发最低收费：0.2 万元（2000元）\n`;
+  if (d !== 1) bk += `× 折扣 ${(d * 100)}% = ${fmt(dd)} 万元\n`;
+  bk += `含税金额：${fmt(dd)} 万元\n增值税额(${t}%)：${fmt(tx)} 万元\n不含税金额：${fmt(nt)} 万元`;
+  showResult('realEstate', rH('房地产估价计算结果') + rA(dd) +
+    rD([['估价结果', fmtW(b)], ['折扣', (d * 100) + '%'], ['含税金额', fmtW(dd)], ['增值税额', fmtW(tx)], ['不含税金额', fmtW(nt)], ['最低收费', '2000 元']]) +
+    rB('计算明细', bk));
+}
+
+// 3. 土地估价
+function calc_land() {
+  let b = +document.getElementById('land-base').value;
+  let d = +document.getElementById('land-discount').value;
+  let t = +document.getElementById('land-tax').value;
+  let res = progressiveCalcDetails(b, [
+    {max:100,rate:4},{max:200,rate:3},{max:1000,rate:2},{max:2000,rate:1.5},
+    {max:5000,rate:0.8},{max:10000,rate:0.4},{max:Infinity,rate:0.1}
+  ]);
+  let f = Math.max(res.total, 0.2);
+  let dd = R2(f * d);
+  let tx = R2(dd / (1 + t / 100) * (t / 100));
+  let nt = R2(dd - tx);
+  let r = fmtW(dd);
+  addHist('土地估价', r);
+  let bk = `差额定率累进法\n估价结果：${fmt(b)} 万元\n`;
+  res.details.forEach(d2 => { bk += `  ${d2.range}万元: 计费额 ${fmt(d2.amount)} 万, 费率 ${d2.rate}, 费用 ${fmt(d2.fee)} 万\n`; });
+  bk += `累进合计：${fmt(res.total)} 万元\n`;
+  if (f === 0.2) bk += `触发最低收费：0.2 万元（2000元）\n`;
+  if (d !== 1) bk += `× 折扣 ${(d * 100)}% = ${fmt(dd)} 万元\n`;
+  bk += `含税金额：${fmt(dd)} 万元\n增值税额(${t}%)：${fmt(tx)} 万元\n不含税金额：${fmt(nt)} 万元`;
+  showResult('land', rH('土地估价计算结果') + rA(dd) +
+    rD([['估价结果', fmtW(b)], ['折扣', (d * 100) + '%'], ['含税金额', fmtW(dd)], ['增值税额', fmtW(tx)], ['不含税金额', fmtW(nt)], ['最低收费', '2000 元']]) +
+    rB('计算明细', bk));
+}
+
+// 4. 社稳风险评估
+function calc_socialStability() {
+  let b = +document.getElementById('socialStability-base').value;
+  let a = +document.getElementById('socialStability-adj').value;
+  let d = +document.getElementById('socialStability-discount').value;
+  let bf;
+  if (b <= 10000) bf = 30;
+  else if (b <= 50000) bf = 30 + (b - 10000) * 0.00125;
+  else if (b <= 100000) bf = 30 + 40000 * 0.00125 + (b - 50000) * 0.001;
+  else bf = 30 + 40000 * 0.00125 + 50000 * 0.001 + (b - 100000) * 0.0008;
+  bf = R2(bf);
+  let ff = R2(bf * a * d);
+  let r = fmtW(ff);
+  addHist('社稳风险评估', r);
+  let bk = `投资规模：${fmt(b)} 万元\n\n基础基价计算（分段累进）：\n`;
+  if (b <= 10000) {
+    bk += `  ≤10000万元：固定基价 30 万元\n`;
+  } else {
+    let segs = [
+      {label:'0~10000万元', amt:10000, rate:0.00125, fixed:30},
+      {label:'10000~50000万元', start:10000, end:50000, rate:0.00125},
+      {label:'50000~100000万元', start:50000, end:100000, rate:0.001},
+      {label:'>100000万元', start:100000, end:Infinity, rate:0.0008}
+    ];
+    bk += `  基础基价：30 万元\n`;
+    segs.forEach((s, i) => {
+      if (i === 0) return;
+      if (b > s.start) {
+        let segEnd = Math.min(b, s.end);
+        let segAmt = segEnd - s.start;
+        let segFee = segAmt * s.rate;
+        bk += `  + ${s.label}：${fmt(segAmt)} 万 × ${s.rate} = ${fmt(segFee)} 万\n`;
+      }
+    });
+  }
+  bk += `  基础基价合计：${fmt(bf)} 万元\n\n× 调整系数 ${a}\n× 折扣 ${(d * 100)}%\n= ${fmt(ff)} 万元`;
+  showResult('socialStability', rH('社会稳定风险评估计算结果') + rA(ff) +
+    rD([['投资规模', fmtW(b)], ['基础基价', fmtW(bf)], ['调整系数', a], ['折扣', (d * 100) + '%'], ['最终费用', fmtW(ff)]]) +
+    rB('计算明细', bk));
+}
+
+// 5. 招标代理
+function calc_tender() {
+  let b = +document.getElementById('tender-base').value;
+  let tp = document.getElementById('tender-type').value;
+  let d = +document.getElementById('tender-discount').value;
+  let rm = {
+    goods: [1.5, 1.1, 0.8, 0.5, 0.25, 0.05, 0.01],
+    service: [1.5, 0.8, 0.45, 0.25, 0.1, 0.05, 0.01],
+    engineering: [1.0, 0.7, 0.55, 0.35, 0.2, 0.05, 0.01]
+  };
+  let lm = { goods: 360, service: 400, engineering: 450 };
+  let bd = [100, 500, 1000, 5000, 10000, 100000, Infinity];
+  let bk = bd.map((m, i) => ({ max: m, rate: rm[tp][i] * 10 }));
+  let res = progressiveCalcDetails(b, bk);
+  let f = Math.min(res.total, lm[tp]);
+  let dd = R2(f * d);
+  let tn = { goods: '货物招标', service: '服务招标', engineering: '工程招标' };
+  let r = fmtW(dd);
+  addHist('招标代理', r);
+  let bkTxt = `差额定率累进法\n中标金额：${fmt(b)} 万元\n服务类型：${tn[tp]}\n`;
+  res.details.forEach(d2 => { bkTxt += `  ${d2.range}万元: 计费额 ${fmt(d2.amount)} 万, 费率 ${d2.rate}, 费用 ${fmt(d2.fee)} 万\n`; });
+  bkTxt += `累进合计：${fmt(res.total)} 万元\n最高限额：${fmt(lm[tp])} 万元\n取值：${fmt(f)} 万元\n× 折扣 ${(d * 100)}% = ${fmt(dd)} 万元`;
+  showResult('tender', rH('招标代理计算结果') + rA(dd) +
+    rD([['中标金额', fmtW(b)], ['服务类型', tn[tp]], ['累进费用', fmtW(R2(res.total))], ['最高限额', fmtW(lm[tp])], ['折扣', (d * 100) + '%'], ['最终费用', fmtW(dd)]]) +
+    rB('计算明细', bkTxt));
+}
+
+// 6. 项目可研
+function calc_feasibility() {
+  let b = +document.getElementById('feasibility-base').value;
+  let tp = document.getElementById('feasibility-type').value;
+  let ind = +document.getElementById('feasibility-industry').value;
+  let cpx = +document.getElementById('feasibility-complexity').value;
+  let tb = {
+    proposal: [[0,1.5],[1000,2.5],[3000,6],[10000,14],[50000,37],[100000,55],[500000,100],[Infinity,125]],
+    report: [[0,3],[1000,5],[3000,12],[10000,28],[50000,75],[100000,110],[500000,200],[Infinity,250]],
+    evalProposal: [[0,0.8],[1000,1.7],[3000,4],[10000,8],[50000,12],[100000,15],[500000,17],[Infinity,20]],
+    evalReport: [[0,1.4],[1000,2.4],[3000,5],[10000,10],[50000,15],[100000,20],[500000,25],[Infinity,35]]
+  };
+  let bf = linearInterp(b, tb[tp]);
+  let ff = R2(bf * ind * cpx);
+  let tn = { proposal: '编制建议书', report: '编制可研', evalProposal: '评估建议书', evalReport: '评估可研' };
+  let r = fmtW(ff);
+  addHist('项目可研', r);
+  let bk = `估算投资额：${fmt(b)} 万元\n服务类型：${tn[tp]}\n\n插值对照表（万元）：\n`;
+  tb[tp].forEach(([inv, price]) => {
+    let label = inv === 0 ? '0' : inv === Infinity ? '∞' : fmt(inv);
+    bk += `  ${label} → ${price} 万元\n`;
+  });
+  bk += `\n线性插值基价：${fmt(R2(bf))} 万元\n× 行业调整系数 ${ind}\n× 复杂程度系数 ${cpx}\n= ${fmt(ff)} 万元`;
+  showResult('feasibility', rH('项目可研计算结果') + rA(ff) +
+    rD([['估算投资额', fmtW(b)], ['服务类型', tn[tp]], ['插值基价', fmtW(R2(bf))], ['行业调整系数', ind], ['复杂程度系数', cpx], ['最终费用', fmtW(ff)]]) +
+    rB('计算明细', bk));
+}
+
+// 7. 工程设计
+function calc_engineeringDesign() {
+  let b = +document.getElementById('engineeringDesign-base').value;
+  let fv = +document.getElementById('engineeringDesign-floatVal').value;
+  let ot = +document.getElementById('engineeringDesign-other').value;
+  let pa = +document.getElementById('engineeringDesign-pro').value;
+  let ca = +document.getElementById('engineeringDesign-complex').value;
+  let ea = +document.getElementById('engineeringDesign-extra').value;
+  let tb = [[200,9],[500,20.9],[1000,38.8],[3000,103.8],[5000,163.9],[8000,249.6],[10000,304.8],[20000,566.8],[40000,1054],[60000,1515.2],[80000,1960.1],[100000,2393.4],[200000,4450.8],[400000,8276.7],[600000,11897.5],[800000,15391.4],[1000000,18793.8],[2000000,34948.9]];
+  let bp = b > 2000000 ? b * 0.016 : linearInterp(b, tb);
+  let ct = R4(pa * ca * ea);
+  let bdf = R2(bp * ct);
+  let bm = R2(bdf + ot);
+  let ff = R2(bm * (1 + fv / 100));
+  let r = fmtW(ff);
+  addHist('工程设计', r);
+  let bk = `计费额：${fmt(b)} 万元\n\n收费基价插值对照表（关键节点）：\n`;
+  [[200,9],[1000,38.8],[5000,163.9],[10000,304.8],[50000,1054],[100000,2393.4],[500000,8276.7],[1000000,18793.8],[2000000,34948.9]].forEach(([inv, price]) => {
+    bk += `  ${fmt(inv)} 万 → ${price} 万元\n`;
+  });
+  if (b > 2000000) bk += `\n计费额超过200万，按 1.6% 计取\n收费基价：${fmt(b)} × 1.6% = ${fmt(R2(bp))} 万元\n`;
+  else bk += `\n线性插值基价：${fmt(R2(bp))} 万元\n`;
+  bk += `\n调整系数：\n  专业调整系数：${pa}\n  工程复杂程度调整系数：${ca}\n  附加调整系数：${ea}\n  系数合计：${ct}\n\n基本设计收费：${fmt(R2(bp))} × ${ct} = ${fmt(bdf)} 万元\n+ 其他设计收费：${fmt(ot)} 万元\n= 基准价：${fmt(bm)} 万元\n× (1 + ${fv}%) = ${fmt(ff)} 万元`;
+  showResult('engineeringDesign', rH('工程设计计算结果') + rA(ff) +
+    rD([['计费额', fmtW(b)], ['收费基价（插值）', fmtW(R2(bp))], ['系数合计', ct], ['基本设计收费', fmtW(bdf)], ['其他设计收费', fmtW(ot)], ['基准价', fmtW(bm)], ['浮动幅度', fv + '%'], ['最终费用', fmtW(ff)]]) +
+    rB('计算明细', bk));
+}
+
+// 8. 建设单位管理费
+function calc_managementFee() {
+  let b = +document.getElementById('managementFee-base').value;
+  let y = +document.getElementById('managementFee-years').value;
+  let d = +document.getElementById('managementFee-discount').value;
+  let res = progressiveCalcDetails(b, [
+    {max:200,rate:14.6},{max:500,rate:10.6},{max:2000,rate:7.9},
+    {max:5000,rate:5.3},{max:10000,rate:4},{max:50000,rate:2.6},{max:Infinity,rate:2}
+  ]);
+  let ff = R2(res.total * y * d);
+  let r = fmtW(ff);
+  addHist('建设单位管理费', r);
+  let bk = `差额定率累进法\n工程总概算：${fmt(b)} 万元\n`;
+  res.details.forEach(d2 => { bk += `  ${d2.range}万元: 计费额 ${fmt(d2.amount)} 万, 费率 ${d2.rate}, 费用 ${fmt(d2.fee)} 万\n`; });
+  bk += `年费率：${fmt(res.total)} 万元\n× ${y} 年\n× 折扣 ${(d * 100)}%\n= ${fmt(ff)} 万元`;
+  showResult('managementFee', rH('建设单位管理费计算结果') + rA(ff) +
+    rD([['工程总概算', fmtW(b)], ['服务年限', y + ' 年'], ['年费率', fmtW(R2(res.total))], ['折扣', (d * 100) + '%'], ['最终费用', fmtW(ff)]]) +
+    rB('计算明细', bk));
+}
+
+// 9. 工程监理
+function calc_supervision() {
+  let b = +document.getElementById('supervision-base').value;
+  let fv = +document.getElementById('supervision-floatVal').value;
+  let pa = +document.getElementById('supervision-pro').value;
+  let ca = +document.getElementById('supervision-complex').value;
+  let aa = +document.getElementById('supervision-altitude').value;
+  let tb = [[500,16.5],[1000,30.1],[3000,78.1],[5000,120.8],[8000,181],[10000,218.6],[20000,393.4],[40000,708.2],[60000,991.4],[80000,1255.8],[100000,1507],[200000,2712.5],[400000,4882.6],[600000,6835.6],[800000,8658.4],[1000000,10390.1]];
+  let bp = b > 1000000 ? b * 0.01039 : linearInterp(b, tb);
+  let ct = R4(pa * ca * aa);
+  let bm = R2(bp * ct);
+  let ff = R2(bm * (1 + fv / 100));
+  let r = fmtW(ff);
+  addHist('工程监理', r);
+  let bk = `计费额：${fmt(b)} 万元\n\n收费基价插值对照表（关键节点）：\n`;
+  [[500,16.5],[1000,30.1],[5000,120.8],[10000,218.6],[50000,708.2],[100000,1507],[500000,4882.6],[1000000,10390.1]].forEach(([inv, price]) => {
+    bk += `  ${fmt(inv)} 万 → ${price} 万元\n`;
+  });
+  if (b > 1000000) bk += `\n计费额超过100万，按 1.039% 计取\n收费基价：${fmt(b)} × 1.039% = ${fmt(R2(bp))} 万元\n`;
+  else bk += `\n线性插值基价：${fmt(R2(bp))} 万元\n`;
+  bk += `\n调整系数：\n  专业调整系数：${pa}\n  工程复杂程度调整系数：${ca}\n  高程调整系数：${aa}\n  系数合计：${ct}\n\n基准价：${fmt(R2(bp))} × ${ct} = ${fmt(bm)} 万元\n× (1 + ${fv}%) = ${fmt(ff)} 万元`;
+  showResult('supervision', rH('工程监理计算结果') + rA(ff) +
+    rD([['计费额', fmtW(b)], ['收费基价（插值）', fmtW(R2(bp))], ['系数合计', ct], ['基准价', fmtW(bm)], ['浮动幅度', fv + '%'], ['最终费用', fmtW(ff)]]) +
+    rB('计算明细', bk));
+}
+
+// ==================== 10. 全过程造价咨询 ====================
+const WPI = [200, 500, 2000, 5000, 10000, 50000, Infinity];
+const WPRI = ["X≤200", "200<X≤500", "500<X≤2000", "2000<X≤5000", "5000<X≤10000", "10000<X≤50000", "X>50000"];
+const WPD = {
+  "技术经济类": {
+    "投资估算编制或审核": { bn: "投资估算价（不含土地使用费）", t: "rt", r: [1.3,1.25,1,0.8,0.6,0.5,0.4] },
+    "概算编制或审核": { bn: "概算价", t: "rt", r: [2.7,2.4,2,1.6,1.4,1.2,1] },
+    "施工图预算编制": { bn: "预算价", t: "rt", r: [3.8,3.6,3,2.5,2.2,2,1.6] },
+    "施工图预算审核": { bn: "送审预算价", t: "rt", r: [2.85,2.7,2.25,1.88,1.65,1.5,1.2] },
+    "工程量清单及最高投标限价编制": { bn: "最高投标限价", t: "rt", r: [6.5,5.5,4.6,4.1,3.7,3,2.5] },
+    "工程量清单及最高投标限价审核": { bn: "送审最高投标限价", t: "rt", r: [4.88,4.13,3.45,3.08,2.78,2.25,1.88] },
+    "工程结算编制": { bn: "结算价", t: "rt", r: [5.5,5.3,4.4,3.8,3,2.5,2] },
+    "工程结算审核": { bn: "送审工程结算价（基本费）", t: "bpb", br: 50, r: [4.1,3.5,3,2.75,2.5,2,1.5] },
+    "工程结算复审": { bn: "送审工程结算价（基本费）", t: "bpb", br: 100, r: [5,4.25,3.5,2.88,2.6,2.38,1.98] },
+    "全过程造价咨询（自项目决策至竣工结算）": { bn: "投资估算价", t: "rt", r: [12,12,11.5,11,10,9,8] },
+    "全过程造价咨询（自项目设计至竣工结算）": { bn: "投资估算价", t: "rt", r: [11,11,10.5,10,9,8,7] },
+    "全过程造价咨询（自项目实施至竣工结算）": { bn: "概算价", t: "rt", r: [10,10,9.5,9,8,7,6] },
+    "全过程造价咨询（自项目实施阶段至竣工结算）": { bn: "最高投标限价", t: "rt", r: [9,9,8.5,8,7,6,1] },
+    "计日成本-一级注册造价工程师": { bn: "人数×天数", t: "dc", up: 2000, u: "元/人·日" },
+    "计日成本-二级注册造价工程师": { bn: "人数×天数", t: "dc", up: 1500, u: "元/人·日" },
+    "计日成本-其他造价专业人员": { bn: "人数×天数", t: "dc", up: 800, u: "元/人·日" },
+    "驻场成本-一级注册造价工程师": { bn: "人数×月数", t: "mc", mn: 15000, mx: 20000, u: "元/人·月" },
+    "驻场成本-二级注册造价工程师": { bn: "人数×月数", t: "mc", mn: 10000, mx: 15000, u: "元/人·月" },
+    "材料/设备价格咨询": { bn: "数量", t: "up", pi: "100元/数据（省内），500元/数据（省外）", p: {"省内": 100, "省外": 500} },
+    "钢筋及预埋件用量计算或审核": { bn: "数量（吨）", t: "up", pi: "12元/吨", p: {"默认": 12} }
+  },
+  "经济评鉴类": {
+    "设计概算评审": { bn: "概算价", t: "rt", r: [2.42,1.79,1.59,1.31,1.08,0.89,0.8] },
+    "调整概算评审": { bn: "概算价", t: "rt", r: [3.06,2.43,2.1,1.83,1.6,1.35,1.08] },
+    "施工图预算评审": { bn: "预算价", t: "rt", r: [4.87,3.59,3.5,3,2.56,2.23,2.07] },
+    "最高投标限价评审": { bn: "最高投标限价", t: "rt", r: [4.71,3.56,3.36,2.89,2.48,2.18,2.03] },
+    "工程变更评审": { bn: "变更金额", t: "rt", r: [5.58,4.43,4.14,3.93,3.78,2.85,2.53] },
+    "跟踪审计": { bn: "建安工程费", t: "rt", r: [16.54,12.41,12.04,10.49,9.18,7.52,6.55] },
+    "工程竣工结算审计": { bn: "送审结算价", t: "rt", r: [5.75,4.2,3.99,3.31,2.86,2.31,2.05] },
+    "项目竣工财务决算审计": { bn: "项目总投资", t: "rt", r: [3.0,2.19,1.96,1.59,1.33,1.0,1.55] }
+  },
+  "投资决策类": {
+    "项目投资机会研究": { bn: "投资额", t: "rt", r: [2.06,1.49,0.96,0.82,0.75,0.35,0.28] },
+    "投融资策划": { bn: "投资额", t: "rt", r: [3.48,2.51,1.5,1.27,1.16,0.6,0.45] },
+    "PPP项目物有所值评价报告编制": { bn: "投资额", t: "rt", r: [2.92,2.13,1.9,1.28,1.12,0.3,0.19] },
+    "PPP项目财政承受能力论证报告编制": { bn: "投资额", t: "rt", r: [2.82,2.04,1.97,1.26,1.05,0.28,0.18] },
+    "PPP项目实施方案编制": { bn: "投资额", t: "rt", r: [3.67,2.65,2.23,1.48,1.27,0.39,0.25] },
+    "PPP项目绩效评价报告编制": { bn: "投资额", t: "rt", r: [3.57,2.06,1.37,1.03,0.62,0.37,0.28] },
+    "项目建议书评估咨询": { bn: "投资额", t: "rt", r: [2.22,1.16,0.45,0.39,0.36,0.35,0.15] },
+    "项目可行性研究报告评估咨询": { bn: "投资额", t: "rt", r: [2.59,1.87,1.52,1.15,1.08,0.66,0.66] },
+    "项目申请报告评估咨询": { bn: "投资额", t: "rt", r: [1.76,1.2,0.56,0.46,0.41,0.25,0.15] },
+    "项目资金申请报告评估咨询": { bn: "投资额", t: "rt", r: [1.51,1.09,0.48,0.39,0.35,0.3,0.13] },
+    "PPP项目物有所值评价评估": { bn: "投资额", t: "rt", r: [2.4,2.0,1.73,1.58,1.5,0.15,0.12] },
+    "PPP项目财政承受能力论证评估": { bn: "投资额", t: "rt", r: [1.8,1.51,1.3,1.02,0.91,0.2,0.12] },
+    "PPP项目实施方案评估": { bn: "投资额", t: "rt", r: [2.55,1.84,1.79,1.21,1.06,0.26,0.17] },
+    "PPP项目绩效评价报告评估": { bn: "投资额", t: "rt", r: [1.5,1.08,0.95,0.64,0.49,0.29,0.16] }
+  },
+  "管理服务类": {
+    "项目风险评估": { bn: "投资额", t: "rt", r: [1.46,1.06,0.79,0.53,0.4,0.26,0.2] }
+  }
+};
+
+function onWPCatChange() {
+  let c = document.getElementById('wholeProcess-category').value;
+  let s = document.getElementById('wholeProcess-service');
+  s.innerHTML = '';
+  Object.keys(WPD[c]).forEach(k => { let o = document.createElement('option'); o.value = k; o.textContent = k; s.appendChild(o); });
+  onWPSvcChange();
+}
+
+function onWPSvcChange() {
+  let c = document.getElementById('wholeProcess-category').value;
+  let s = document.getElementById('wholeProcess-service').value;
+  let d = WPD[c][s];
+  document.getElementById('wpBaseHint').textContent = d.bn;
+  let dd = document.getElementById('wpDynamic'), df = document.getElementById('wpDynFields');
+  if (d.t === 'bpb') {
+    dd.classList.add('show');
+    df.innerHTML = `<div class="form-group"><label class="form-label">核减核增额绝对值之和（万元）</label><input type="number" class="form-input" id="wholeProcess-benefit" value="0" step="0.01"><span class="form-hint">效益费率：${d.br}‰</span></div>`;
+  } else if (d.t === 'dc') {
+    dd.classList.add('show');
+    df.innerHTML = `<div class="form-group"><label class="form-label">人数</label><input type="number" class="form-input" id="wholeProcess-persons" value="1" step="1" min="1"></div><div class="form-group"><label class="form-label">天数</label><input type="number" class="form-input" id="wholeProcess-days" value="1" step="1" min="1"></div>`;
+  } else if (d.t === 'mc') {
+    dd.classList.add('show');
+    df.innerHTML = `<div class="form-group"><label class="form-label">人数</label><input type="number" class="form-input" id="wholeProcess-persons" value="1" step="1" min="1"></div><div class="form-group"><label class="form-label">月数</label><input type="number" class="form-input" id="wholeProcess-months" value="1" step="1" min="1"></div>`;
+  } else if (d.t === 'up') {
+    dd.classList.add('show');
+    let opts = Object.keys(d.p).map(k => `<option value="${k}">${k} (${d.p[k]}元)</option>`).join('');
+    df.innerHTML = `<div class="form-group"><label class="form-label">单价类型</label><select class="form-select" id="wholeProcess-unitType">${opts}</select><span class="form-hint">${d.pi}</span></div><div class="form-group"><label class="form-label">数量</label><input type="number" class="form-input" id="wholeProcess-quantity" value="1" step="1" min="1"></div>`;
+  } else {
+    dd.classList.remove('show');
+    df.innerHTML = '';
+  }
+  // Update rate table
+  let rc = document.getElementById('wpRateContent');
+  if (d.t === 'rt' || d.t === 'bpb') {
+    let rows = WPRI.map((iv, i) => `<tr><td>${iv}</td><td class="hl">${d.r[i]}‰</td></tr>`).join('');
+    rc.innerHTML = `<div class="rate-table-wrapper"><table class="rate-table"><thead><tr><th>区间（万元）</th><th>费率</th></tr></thead><tbody>${rows}</tbody></table></div><div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted)">计费基数：${d.bn}</div>`;
+  } else if (d.t === 'dc') {
+    rc.innerHTML = `<div class="formula-box">单价：<span class="var">${d.up} ${d.u}</span><br>费用 = 人数 × 天数 × 单价</div>`;
+  } else if (d.t === 'mc') {
+    rc.innerHTML = `<div class="formula-box">单价范围：<span class="var">${d.mn}～${d.mx} ${d.u}</span>（取中值）<br>费用 = 人数 × 月数 × 中值单价</div>`;
+  } else if (d.t === 'up') {
+    rc.innerHTML = `<div class="formula-box">${d.pi}<br>费用 = 数量 × 单价</div>`;
+  } else {
+    rc.innerHTML = '';
+  }
+}
+
+function calc_wholeProcess() {
+  let c = document.getElementById('wholeProcess-category').value;
+  let s = document.getElementById('wholeProcess-service').value;
+  let d = WPD[c][s];
+  let b = +document.getElementById('wholeProcess-base').value;
+  let pa = +document.getElementById('wholeProcess-proAdj').value;
+  let ca = +document.getElementById('wholeProcess-complexAdj').value;
+  let di = +document.getElementById('wholeProcess-discount').value;
+  let bf = 0, bk = '';
+  if (d.t === 'rt') {
+    let bk2 = WPI.map((m, i) => ({ max: m, rate: d.r[i] }));
+    let res = progressiveCalcDetails(b, bk2);
+    bf = res.total;
+    bk = `差额定率累进法\n计费基数：${fmt(b)} 万元\n`;
+    res.details.forEach(d2 => { bk += `  ${d2.range}万元: ${fmt(d2.amount)} 万 × ${d2.rate} = ${fmt(d2.fee)} 万\n`; });
+    bk += `累进合计：${fmt(bf)} 万元`;
+  } else if (d.t === 'bpb') {
+    let bb = +(document.getElementById('wholeProcess-benefit')?.value || 0);
+    let bk2 = WPI.map((m, i) => ({ max: m, rate: d.r[i] }));
+    let res = progressiveCalcDetails(b, bk2);
+    let mf = res.total;
+    let ef = R2(bb * d.br / 1000);
+    bf = R2(mf + ef);
+    bk = `基本费（累进）：${fmt(mf)} 万元\n效益费：${fmt(bb)} × ${d.br}‰ = ${fmt(ef)} 万元\n合计：${fmt(bf)} 万元`;
+  } else if (d.t === 'dc') {
+    let ps = +(document.getElementById('wholeProcess-persons')?.value || 1);
+    let dy = +(document.getElementById('wholeProcess-days')?.value || 1);
+    bf = R2(ps * dy * d.up / 10000);
+    bk = `${ps}人 × ${dy}天 × ${d.up}元 = ${fmt(bf)} 万元`;
+  } else if (d.t === 'mc') {
+    let ps = +(document.getElementById('wholeProcess-persons')?.value || 1);
+    let mo = +(document.getElementById('wholeProcess-months')?.value || 1);
+    let mp = (d.mn + d.mx) / 2;
+    bf = R2(ps * mo * mp / 10000);
+    bk = `${ps}人 × ${mo}月 × ${fmt(mp)}元 = ${fmt(bf)} 万元`;
+  } else if (d.t === 'up') {
+    let ut = document.getElementById('wholeProcess-unitType')?.value || Object.keys(d.p)[0];
+    let q = +(document.getElementById('wholeProcess-quantity')?.value || 1);
+    let up = d.p[ut];
+    bf = R2(q * up / 10000);
+    bk = `${q} × ${up}元 = ${fmt(bf)} 万元`;
+  }
+  let ff = R2(bf * pa * ca * di);
+  let r = fmtW(ff);
+  addHist('全过程造价咨询', r);
+  showResult('wholeProcess', rH('全过程造价咨询计算结果') +
+    `<div style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:6px">${c} / ${s}</div>` +
+    rA(ff) +
+    rD([['计费基数', fmtW(b)], ['计费基数说明', d.bn], ['基础费用', fmtW(R2(bf))], ['专业工程调整系数', pa], ['复杂程度调整系数', ca], ['折扣', (di * 100) + '%'], ['最终费用', fmtW(ff)]]) +
+    rB('计算明细', bk));
+}
+
+// Init WP
+onWPCatChange();
+
+// ==================== 11. 审计收费 ====================
+function onAuditTypeChange() {
+  let t = document.getElementById('audit-type').value;
+  document.getElementById('auditDynamic').classList.toggle('show', t === 'special_construction');
+}
+
+function calcAuditBase(assetWan) {
+  let a = assetWan * 10000;
+  let detail = `资产总额：${fmt(assetWan)} 万元（${a.toLocaleString()} 元）\n\n`;
+  let fee;
+  if (a <= 1000000) { fee = 2000; detail += `≤100万元：固定收费 2,000 元\n`; }
+  else if (a <= 5000000) { fee = 4000; detail += `100万~500万元：固定收费 4,000 元\n`; }
+  else if (a <= 10000000) { fee = 7000; detail += `500万~1000万元：固定收费 7,000 元\n`; }
+  else if (a <= 30000000) { fee = 8000; detail += `1000万~3000万元：固定收费 8,000 元\n`; }
+  else if (a <= 50000000) { fee = 10000; detail += `3000万~5000万元：固定收费 10,000 元\n`; }
+  else {
+    let segs = [
+      {label:'5000万~1亿元', base:10000, start:50000000, end:100000000, rate:0.0005},
+      {label:'1亿~3亿元', start:100000000, end:300000000, rate:0.0003},
+      {label:'3亿~5亿元', start:300000000, end:500000000, rate:0.0002},
+      {label:'5亿~7亿元', start:500000000, end:700000000, rate:0.0001},
+      {label:'7亿~10亿元', start:700000000, end:1000000000, rate:0.00008},
+      {label:'>10亿元', start:1000000000, end:Infinity, rate:0.00005}
+    ];
+    fee = 10000;
+    detail += `基础费用：10,000 元\n`;
+    segs.forEach(s => {
+      if (a > s.start) {
+        let segEnd = Math.min(a, s.end);
+        let segAmt = segEnd - s.start;
+        let segFee = segAmt * s.rate;
+        fee += segFee;
+        detail += `+ ${s.label}：${segAmt.toLocaleString()} 元 × ${s.rate} = ${fmt(segFee)} 元\n`;
+      }
+    });
+  }
+  detail += `\n基础费用合计：${fmt(fee)} 元（${fmt(fee/10000)} 万元）`;
+  return { fee: fee / 10000, detail };
+}
+
+function calc_audit() {
+  let t = document.getElementById('audit-type').value;
+  let b = +document.getElementById('audit-base').value;
+  let d = +document.getElementById('audit-discount').value;
+  let { fee: baseFee, detail: baseDetail } = calcAuditBase(b);
+  let ff = 0;
+  let tn = {
+    accounting: '会计报表审计', gov: '行政事业单位财务收支审计',
+    merge: '企业合并、分立、清算', responsibility: '经济责任审计',
+    special_construction: '专项审计（基本建设竣工财务决算等）',
+    special_hightech: '专项审计（高新技术企业产品收入和研发费等）',
+    special_medical: '专项审计（医疗卫生机构等非营利组织财务报表）'
+  };
+  if (t === 'merge') { ff = b * 5 / 1000; }
+  else if (t === 'responsibility') { ff = baseFee * 1.5; }
+  else if (t === 'special_construction') { let rate = +document.getElementById('audit-rate-select').value; ff = b * rate / 1000; }
+  else if (t === 'special_hightech') { ff = baseFee * 1.3; }
+  else { ff = baseFee; }
+  ff = R2(ff * d);
+  let r = fmtW(ff);
+  addHist('审计收费', r);
+  let typeDetail = '';
+  if (t === 'merge') typeDetail = `\n\n计算方式：资产总额 × 5‰\n= ${fmt(b)} × 0.005 = ${fmt(b * 5 / 1000)} 万元`;
+  else if (t === 'responsibility') typeDetail = `\n\n计算方式：基础费用 × 1.5\n= ${fmt(R2(baseFee))} × 1.5 = ${fmt(R2(baseFee * 1.5))} 万元`;
+  else if (t === 'special_construction') { let rate = +document.getElementById('audit-rate-select').value; typeDetail = `\n\n计算方式：资产总额 × ${rate}‰\n= ${fmt(b)} × ${rate/1000} = ${fmt(b * rate / 1000)} 万元`; }
+  else if (t === 'special_hightech') typeDetail = `\n\n计算方式：基础费用 × 1.3\n= ${fmt(R2(baseFee))} × 1.3 = ${fmt(R2(baseFee * 1.3))} 万元`;
+  else typeDetail = `\n\n计算方式：基础费用`;
+  showResult('audit', rH('审计收费计算结果') + rA(ff) +
+    rD([['审计类型', tn[t]], ['资产总额', fmtW(b)], ['基础费用', fmtW(R2(baseFee))], ['折扣', (d * 100) + '%'], ['最终费用', fmtW(ff)]]) +
+    rB('计算明细', `审计类型：${tn[t]}\n${baseDetail}${typeDetail}\n\n× 折扣 ${(d * 100)}%\n= ${fmt(ff)} 万元`));
+}
+
+// ==================== 12. 绩效评价(PPP) ====================
+function calc_performancePPP() {
+  let b = +document.getElementById('performancePPP-base').value;
+  let a = +document.getElementById('performancePPP-adj').value;
+  let d = +document.getElementById('performancePPP-discount').value;
+  let bf;
+  if (b <= 10000) bf = 30;
+  else if (b <= 50000) bf = 30 + (b - 10000) * 0.00125;
+  else if (b <= 100000) bf = 30 + 40000 * 0.00125 + (b - 50000) * 0.001;
+  else bf = 30 + 40000 * 0.00125 + 50000 * 0.001 + (b - 100000) * 0.0008;
+  bf = R2(bf);
+  let ff = R2(bf * a * d);
+  let r = fmtW(ff);
+  addHist('绩效评价(PPP)', r);
+  let bk = `投资规模：${fmt(b)} 万元\n\n基础基价计算（分段累进）：\n`;
+  if (b <= 10000) {
+    bk += `  ≤10000万元：固定基价 30 万元\n`;
+  } else {
+    let segs = [
+      {label:'0~10000万元', amt:10000, rate:0.00125, fixed:30},
+      {label:'10000~50000万元', start:10000, end:50000, rate:0.00125},
+      {label:'50000~100000万元', start:50000, end:100000, rate:0.001},
+      {label:'>100000万元', start:100000, end:Infinity, rate:0.0008}
+    ];
+    bk += `  基础基价：30 万元\n`;
+    segs.forEach((s, i) => {
+      if (i === 0) return;
+      if (b > s.start) {
+        let segEnd = Math.min(b, s.end);
+        let segAmt = segEnd - s.start;
+        let segFee = segAmt * s.rate;
+        bk += `  + ${s.label}：${fmt(segAmt)} 万 × ${s.rate} = ${fmt(segFee)} 万\n`;
+      }
+    });
+  }
+  bk += `  基础基价合计：${fmt(bf)} 万元\n\n× 调整系数 ${a}\n× 折扣 ${(d * 100)}%\n= ${fmt(ff)} 万元`;
+  showResult('performancePPP', rH('绩效评价（PPP）计算结果') + rA(ff) +
+    rD([['投资规模', fmtW(b)], ['基础基价', fmtW(bf)], ['调整系数', a], ['折扣', (d * 100) + '%'], ['最终费用', fmtW(ff)]]) +
+    rB('计算明细', bk));
+}
+
+// ==================== 13. 绩效评价(财务) ====================
+function calc_performanceFinance() {
+  let b = +document.getElementById('performanceFinance-base').value;
+  let d = +document.getElementById('performanceFinance-discount').value;
+  let tp = +document.getElementById('performanceFinance-type').value;
+  let ev = +document.getElementById('performanceFinance-env').value;
+  let ar = +document.getElementById('performanceFinance-area').value;
+  let tc = +document.getElementById('performanceFinance-tech').value;
+  let sc = +document.getElementById('performanceFinance-scope').value;
+  let bf;
+  if (b <= 100) bf = 4;
+  else if (b <= 1000) bf = 8;
+  else if (b <= 5000) bf = 12;
+  else if (b <= 10000) bf = 16;
+  else bf = 25;
+  let ct = R4(tp * ev * ar * tc * sc);
+  let ff = R2(bf * ct * d);
+  let r = fmtW(ff);
+  addHist('绩效评价(财务)', r);
+  let bk = `预算金额：${fmt(b)} 万元\n\n基本费用（分段阶梯）：\n`;
+  let steps = [
+    {label:'≤100万元', val:4}, {label:'100~1000万元', val:8},
+    {label:'1000~5000万元', val:12}, {label:'5000~10000万元', val:16},
+    {label:'>10000万元', val:25}
+  ];
+  steps.forEach(s => { bk += `  ${s.label}：${s.val} 万元\n`; });
+  bk += `  → 本项目适用：${bf} 万元\n\n调整系数：\n  项目类型系数：${tp}\n  工作环境系数：${ev}\n  工作区域系数：${ar}\n  行业系数：${tc}\n  评价范围系数：${sc}\n  系数合计：${ct}\n\n${fmt(bf)} × ${ct} = ${fmt(R2(bf * ct))} 万元\n× 折扣 ${(d * 100)}%\n= ${fmt(ff)} 万元`;
+  showResult('performanceFinance', rH('绩效评价（财务）计算结果') + rA(ff) +
+    rD([['预算金额', fmtW(b)], ['基本费用', fmtW(bf)], ['系数合计', ct], ['折扣', (d * 100) + '%'], ['最终费用', fmtW(ff)]]) +
+    rB('计算明细', bk));
+}
+
+// ==================== 14. PPP咨询 ====================
+function calc_ppp() {
+  let b = +document.getElementById('ppp-base').value;
+  let cx = +document.getElementById('ppp-complex').value;
+  let d = +document.getElementById('ppp-discount').value;
+  let P = b / 10000; // 亿元
+  let s1;
+  if (P <= 1) s1 = 40;
+  else if (P <= 5) s1 = 40 + (P - 1) * 10;
+  else if (P <= 10) s1 = 40 + 40 + (P - 5) * 1;
+  else s1 = 40 + 40 + 5 + (P - 10) * 0.2;
+  let s2;
+  if (P <= 5) s2 = 12;
+  else if (P <= 10) s2 = 12 + (P - 5) * (20 - 12) / (10 - 5);
+  else s2 = 20;
+  let s3;
+  if (P <= 5) s3 = 10;
+  else if (P <= 10) s3 = 10 + (P - 5) * (18 - 10) / (10 - 5);
+  else s3 = 18;
+  let s4 = s1 * 0.45;
+  let total = R2((s1 + s2 + s3 + s4) * cx * d);
+  let r = fmtW(total);
+  addHist('PPP咨询', r);
+  let bk = `项目投资规模：${fmt(b)} 万元（${fmt(R2(P))} 亿元）\n\n`;
+  bk += `1. 实施方案编制：\n`;
+  if (P <= 1) bk += `   ≤1亿元：固定 40 万元\n`;
+  else if (P <= 5) bk += `   1~5亿元：40 + (${fmt(R2(P))} - 1) × 10 = ${fmt(R2(s1))} 万元\n`;
+  else if (P <= 10) bk += `   5~10亿元：80 + (${fmt(R2(P))} - 5) × 1 = ${fmt(R2(s1))} 万元\n`;
+  else bk += `   >10亿元：85 + (${fmt(R2(P))} - 10) × 0.2 = ${fmt(R2(s1))} 万元\n`;
+  bk += `\n2. 物有所值评价：\n`;
+  if (P <= 5) bk += `   ≤5亿元：固定 12 万元\n`;
+  else if (P <= 10) bk += `   5~10亿元：12 + (${fmt(R2(P))} - 5) × 1.6 = ${fmt(R2(s2))} 万元\n`;
+  else bk += `   >10亿元：固定 20 万元\n`;
+  bk += `\n3. 财政承受能力论证：\n`;
+  if (P <= 5) bk += `   ≤5亿元：固定 10 万元\n`;
+  else if (P <= 10) bk += `   5~10亿元：10 + (${fmt(R2(P))} - 5) × 1.6 = ${fmt(R2(s3))} 万元\n`;
+  else bk += `   >10亿元：固定 18 万元\n`;
+  bk += `\n4. 合同及配套协议编制：\n   实施方案 × 45% = ${fmt(R2(s1))} × 0.45 = ${fmt(R2(s4))} 万元\n`;
+  bk += `\n小计：${fmt(R2(s1))} + ${fmt(R2(s2))} + ${fmt(R2(s3))} + ${fmt(R2(s4))} = ${fmt(R2(s1+s2+s3+s4))} 万元\n× 复杂系数 ${cx}\n× 折扣 ${(d * 100)}%\n= ${fmt(total)} 万元`;
+  showResult('ppp', rH('PPP咨询计算结果') + rA(total) +
+    rD([
+      ['项目投资规模', fmtW(b)], ['投资规模（亿元）', fmt(R2(P))],
+      ['实施方案编制', fmtW(R2(s1))], ['物有所值评价报告', fmtW(R2(s2))],
+      ['财政承受能力论证报告', fmtW(R2(s3))], ['合同及配套协议编制', fmtW(R2(s4))],
+      ['小计', fmtW(R2(s1 + s2 + s3 + s4))], ['复杂项目调整系数', cx],
+      ['折扣', (d * 100) + '%'], ['最终费用', fmtW(total)]
+    ]) +
+    rB('计算明细', bk));
+}
+
+// ==================== 15. 费用汇总 ====================
+function calc_summary() {
+  let b = +document.getElementById('summary-base').value;
+  let d = +document.getElementById('summary-discount').value;
+  let items = [];
+
+  // 1. 资产评估
+  items.push({ cat: '评估估价', name: '资产评估', fee: R2(progressiveCalc(b, [{max:100,rate:12},{max:1000,rate:4.8},{max:5000,rate:1.2},{max:10000,rate:0.8},{max:100000,rate:0.15},{max:Infinity,rate:0.1}]) * d) });
+
+  // 2. 房地产估价
+  items.push({ cat: '评估估价', name: '房地产估价', fee: R2(Math.max(progressiveCalc(b, [{max:100,rate:5},{max:1000,rate:2.5},{max:2000,rate:1.5},{max:5000,rate:0.8},{max:8000,rate:0.4},{max:10000,rate:0.2},{max:Infinity,rate:0.1}]), 0.2) * d) });
+
+  // 3. 土地估价
+  items.push({ cat: '评估估价', name: '土地估价', fee: R2(Math.max(progressiveCalc(b, [{max:100,rate:4},{max:200,rate:3},{max:1000,rate:2},{max:2000,rate:1.5},{max:5000,rate:0.8},{max:10000,rate:0.4},{max:Infinity,rate:0.1}]), 0.2) * d) });
+
+  // 4. 社稳风险评估
+  let ssbf;
+  if (b <= 10000) ssbf = 30;
+  else if (b <= 50000) ssbf = 30 + (b - 10000) * 0.00125;
+  else if (b <= 100000) ssbf = 30 + 40000 * 0.00125 + (b - 50000) * 0.001;
+  else ssbf = 30 + 40000 * 0.00125 + 50000 * 0.001 + (b - 100000) * 0.0008;
+  items.push({ cat: '工程咨询', name: '社稳风险评估', fee: R2(ssbf * d) });
+
+  // 5. 招标代理 - 三种类型
+  let tenderTypes = [
+    { name: '招标代理（货物招标）', rates: [1.5,1.1,0.8,0.5,0.25,0.05,0.01], limit: 360 },
+    { name: '招标代理（服务招标）', rates: [1.5,0.8,0.45,0.25,0.1,0.05,0.01], limit: 400 },
+    { name: '招标代理（工程招标）', rates: [1.0,0.7,0.55,0.35,0.2,0.05,0.01], limit: 450 }
+  ];
+  tenderTypes.forEach(tt => {
+    let f = Math.min(progressiveCalc(b, [100,500,1000,5000,10000,100000,Infinity].map((m,i) => ({max:m, rate:tt.rates[i]*10}))), tt.limit) * d;
+    items.push({ cat: '工程咨询', name: tt.name, fee: R2(f) });
+  });
+
+  // 6. 项目可研 - 四种类型
+  let ftb = {
+    '编制建议书': [[0,1.5],[1000,2.5],[3000,6],[10000,14],[50000,37],[100000,55],[500000,100],[Infinity,125]],
+    '编制可研': [[0,3],[1000,5],[3000,12],[10000,28],[50000,75],[100000,110],[500000,200],[Infinity,250]],
+    '评估建议书': [[0,0.8],[1000,1.7],[3000,4],[10000,8],[50000,12],[100000,15],[500000,17],[Infinity,20]],
+    '评估可研': [[0,1.4],[1000,2.4],[3000,5],[10000,10],[50000,15],[100000,20],[500000,25],[Infinity,35]]
+  };
+  Object.keys(ftb).forEach(tn => {
+    items.push({ cat: '工程咨询', name: '项目可研（' + tn + '）', fee: R2(linearInterp(b, ftb[tn]) * d) });
+  });
+
+  // 7. 工程设计
+  let edt = [[200,9],[500,20.9],[1000,38.8],[3000,103.8],[5000,163.9],[8000,249.6],[10000,304.8],[20000,566.8],[40000,1054],[60000,1515.2],[80000,1960.1],[100000,2393.4],[200000,4450.8],[400000,8276.7],[600000,11897.5],[800000,15391.4],[1000000,18793.8],[2000000,34948.9]];
+  items.push({ cat: '工程咨询', name: '工程设计', fee: R2((b > 2000000 ? b * 0.016 : linearInterp(b, edt)) * d) });
+
+  // 8. 建设单位管理费
+  items.push({ cat: '工程咨询', name: '建设单位管理费', fee: R2(progressiveCalc(b, [{max:200,rate:14.6},{max:500,rate:10.6},{max:2000,rate:7.9},{max:5000,rate:5.3},{max:10000,rate:4},{max:50000,rate:2.6},{max:Infinity,rate:2}]) * d) });
+
+  // 9. 工程监理
+  let svt = [[500,16.5],[1000,30.1],[3000,78.1],[5000,120.8],[8000,181],[10000,218.6],[20000,393.4],[40000,708.2],[60000,991.4],[80000,1255.8],[100000,1507],[200000,2712.5],[400000,4882.6],[600000,6835.6],[800000,8658.4],[1000000,10390.1]];
+  items.push({ cat: '工程咨询', name: '工程监理', fee: R2((b > 1000000 ? b * 0.01039 : linearInterp(b, svt)) * d) });
+
+  // 10. 全过程造价咨询 - 列出所有服务类型
+  for (let cat in WPD) {
+    for (let svc in WPD[cat]) {
+      let dd = WPD[cat][svc];
+      let fee = 0;
+      if (dd.t === 'rt') {
+        fee = progressiveCalc(b, WPI.map((m, i) => ({ max: m, rate: dd.r[i] })));
+      } else if (dd.t === 'bpb') {
+        let base = progressiveCalc(b, WPI.map((m, i) => ({ max: m, rate: dd.r[i] })));
+        let benefit = b * dd.br / 1000;
+        fee = base + benefit;
+      } else if (dd.t === 'dc') {
+        fee = 0; // 需要人数天数，汇总中跳过
+        continue;
+      } else if (dd.t === 'mc') {
+        fee = 0; // 需要人数月数，汇总中跳过
+        continue;
+      } else if (dd.t === 'up') {
+        fee = 0; // 需要数量，汇总中跳过
+        continue;
+      }
+      items.push({ cat: '造价咨询', name: '全过程造价（' + svc + '）', fee: R2(fee * d) });
+    }
+  }
+
+  // 11. 审计收费 - 所有类型
+  let auditTypes = [
+    { name: '审计（会计报表审计）', calc: (a) => calcAuditBase(a).fee },
+    { name: '审计（行政事业单位财务收支审计）', calc: (a) => calcAuditBase(a).fee },
+    { name: '审计（企业合并、分立、清算）', calc: (a) => a * 5 / 1000 },
+    { name: '审计（经济责任审计）', calc: (a) => calcAuditBase(a).fee * 1.5 },
+    { name: '审计（专项审计-基本建设竣工决算）', calc: (a) => a * 2.5 / 1000 },
+    { name: '审计（专项审计-高新技术企业）', calc: (a) => calcAuditBase(a).fee * 1.3 },
+    { name: '审计（专项审计-医疗卫生机构）', calc: (a) => calcAuditBase(a).fee }
+  ];
+  auditTypes.forEach(at => {
+    items.push({ cat: '审计', name: at.name, fee: R2(at.calc(b) * d) });
+  });
+
+  // 12. 绩效评价(PPP)
+  items.push({ cat: '绩效与PPP', name: '绩效评价(PPP)', fee: R2(ssbf * d) });
+
+  // 13. 绩效评价(财务)
+  let pfbf;
+  if (b <= 100) pfbf = 4;
+  else if (b <= 1000) pfbf = 8;
+  else if (b <= 5000) pfbf = 12;
+  else if (b <= 10000) pfbf = 16;
+  else pfbf = 25;
+  items.push({ cat: '绩效与PPP', name: '绩效评价(财务)', fee: R2(pfbf * d) });
+
+  // 14. PPP咨询
+  let PP = b / 10000, ps1;
+  if (PP <= 1) ps1 = 40;
+  else if (PP <= 5) ps1 = 40 + (PP - 1) * 10;
+  else if (PP <= 10) ps1 = 40 + 40 + (PP - 5) * 1;
+  else ps1 = 40 + 40 + 5 + (PP - 10) * 0.2;
+  let ps2;
+  if (PP <= 5) ps2 = 12;
+  else if (PP <= 10) ps2 = 12 + (PP - 5) * (20 - 12) / (10 - 5);
+  else ps2 = 20;
+  let ps3;
+  if (PP <= 5) ps3 = 10;
+  else if (PP <= 10) ps3 = 10 + (PP - 5) * (18 - 10) / (10 - 5);
+  else ps3 = 18;
+  items.push({ cat: '绩效与PPP', name: 'PPP咨询', fee: R2((ps1 + ps2 + ps3 + ps1 * 0.45) * d) });
+
+  // 按类别分组，类别内按费用排序
+  let catOrder = ['评估估价', '工程咨询', '造价咨询', '审计', '绩效与PPP'];
+  let grouped = {};
+  items.forEach(item => {
+    if (!grouped[item.cat]) grouped[item.cat] = [];
+    grouped[item.cat].push(item);
+  });
+  // 每组内按费用降序
+  Object.values(grouped).forEach(g => g.sort((a, b2) => b2.fee - a.fee));
+
+  let totalFee = items.reduce((s, i) => s + i.fee, 0);
+  let maxFee = Math.max(...items.map(i => i.fee));
+
+  // 生成表格
+  let rows = '';
+  catOrder.forEach(cat => {
+    if (!grouped[cat]) return;
+    // 类别标题行
+    let catTotal = grouped[cat].reduce((s, i) => s + i.fee, 0);
+    rows += `<tr class="cat-row"><td colspan="3"><strong>${cat}</strong>（${grouped[cat].length}项，小计 ${fmt(catTotal)} 万元）</td></tr>`;
+    grouped[cat].forEach(item => {
+      let barW = maxFee > 0 ? (item.fee / maxFee * 100) : 0;
+      rows += `<tr>
+        <td>${item.name}<div class="pct-bar-wrap"><div class="pct-bar" style="width:${barW}%"></div></div></td>
+        <td class="amount">${fmt(item.fee)}</td>
+      </tr>`;
+    });
+  });
+
+  let r = fmtW(R2(totalFee));
+  addHist('费用汇总', r);
+  showResult('summary', rH('费用汇总计算结果') + rA(R2(totalFee)) +
+    rD([['项目总投资', fmtW(b)], ['统一折扣', (d * 100) + '%'], ['费用项目数', items.length + ' 项']]) +
+    `<div style="margin-top:18px"><table class="summary-table">
+      <thead><tr><th>费用项目</th><th style="width:120px">金额（万元）</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="summary-total-bar">
+      <span class="total-label">全部模块合计（${items.length}项）</span>
+      <span class="total-value">${fmt(R2(totalFee))} 万元</span>
+    </div></div>`);
+}
+
+// ==================== AI智能问答 ====================
+let aiInited = false;
+function toggleAIChat() {
+  let p = document.getElementById('aiChatPanel');
+  p.classList.toggle('show');
+  if (!aiInited) {
+    aiInited = true;
+    addAiMsg('bot', '你好！我是计费平台智能助手，可以回答以下类型的问题：<ul><li>各模块的收费标准和费率</li><li>计算方法的解释</li><li>平台使用方法</li><li>跳转到对应模块</li></ul>试试点击下方的快捷问题，或直接输入你的问题。');
+  }
+}
+function aiAsk(q) { document.getElementById('aiInput').value = q; aiSend(); }
+function aiSend() {
+  let input = document.getElementById('aiInput');
+  let q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+  addAiMsg('user', q);
+  setTimeout(() => {
+    let answer = matchAnswer(q);
+    addAiMsg('bot', answer);
+  }, 300);
+}
+function addAiMsg(type, html) {
+  let box = document.getElementById('aiChatMessages');
+  let div = document.createElement('div');
+  div.className = 'ai-msg ai-msg-' + type;
+  div.innerHTML = '<div class="ai-msg-bubble">' + html + '</div>';
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+function matchAnswer(q) {
+  let ql = q.toLowerCase();
+  // 模块跳转
+  let modules = {
+    '资产评估': 'asset', '房地产': 'realEstate', '土地': 'land', '社稳': 'socialStability',
+    '招标': 'tender', '可研': 'feasibility', '工程设计': 'engineeringDesign', '管理费': 'managementFee',
+    '监理': 'supervision', '全过程': 'wholeProcess', '审计': 'audit',
+    '绩效': 'performancePPP', 'ppp': 'ppp', '汇总': 'summary'
+  };
+  // 差额定率累进法
+  if (ql.includes('差额定率') || ql.includes('累进法') || ql.includes('累进')) {
+    return '<strong>差额定率累进法</strong>是工程咨询收费的常用计算方法：<br><br>将计费基数按金额大小分成若干档位，每档适用不同的费率。计算时，各档分别计算费用后累加求和。<br><br>举例（资产评估）：<ul><li>0~100万元部分：费率 12‰</li><li>100~1000万元部分：费率 4.8‰</li><li>1000~5000万元部分：费率 1.2‰</li><li>以此类推...</li></ul>就像个人所得税的超额累进一样，金额越大，超出部分的费率越低。';
+  }
+  // 线性插值
+  if (ql.includes('线性插值') || ql.includes('插值')) {
+    return '<strong>线性插值法</strong>用于在两个已知数据点之间估算中间值。<br><br>例如：已知投资额1000万对应基价5万，3000万对应基价12万，那么2000万的基价 = 5 + (12-5) × (2000-1000)/(3000-1000) = <strong>8.5万</strong>。<br><br>工程设计、工程监理等模块使用此方法确定收费基价。';
+  }
+  // 导出Excel
+  if (ql.includes('导出') || ql.includes('excel') || ql.includes('输出')) {
+    return '计算完成后，点击结果右上角的 <strong>"导出Excel"</strong> 按钮即可下载。<br><br>每次导出的数据会自动追加到同一个Excel文件中，包含三列：<ul><li><strong>类别</strong>：哪个模块</li><li><strong>参数</strong>：输入的参数值</li><li><strong>计算结果</strong>：最终费用</li></ul>所有记录汇总在 <strong>费用计算汇总.xlsx</strong> 中。';
+  }
+  // 依据文件
+  if (ql.includes('依据文件') || ql.includes('文件') && ql.includes('放')) {
+    return '将文件放入程序同目录下的 <strong>"依据文件"</strong> 文件夹中，支持 Word/PDF/Excel/图片 等格式。<br><br>点击侧边栏底部的 <strong>"依据文件"</strong> 即可查看和下载所有文件，局域网内其他人也能看到。';
+  }
+  // 依据文件
+  if (ql.includes('依据文件') || (ql.includes('文件') && ql.includes('放'))) {
+    return '将文件放入程序同目录下的 <strong>"依据文件"</strong> 文件夹中，支持 Word/PDF/Excel/图片 等格式。<br><br>点击侧边栏底部的 <strong>"依据文件"</strong> 即可查看和下载所有文件，局域网内其他人也能看到。';
+  }
+  // 收藏
+  if (ql.includes('收藏') || ql.includes('保存参数')) {
+    return '在每个模块页面点击 <strong>"收藏参数"</strong> 按钮，可以保存当前输入的参数值。<br><br>点击顶部栏的 <strong>"收藏"</strong> 按钮，可以查看和管理所有已保存的参数，点击即可快速填入。';
+  }
+  // 历史
+  if (ql.includes('历史') || ql.includes('记录')) {
+    return '每次计算后结果会自动保存到历史记录中。<br><br>点击顶部栏的 <strong>"历史"</strong> 按钮可以查看所有历史计算记录。';
+  }
+  // 折扣
+  if (ql.includes('折扣') || ql.includes('优惠')) {
+    return '每个模块都有 <strong>折扣</strong> 参数（范围 0~1），默认为1（不打折）。<br><br>例如：折扣设为0.8表示打八折，最终费用 = 计算结果 × 0.8。<br><br>汇总页面的统一折扣会同时应用于所有模块。';
+  }
+  // 增值税
+  if (ql.includes('增值税') || ql.includes('含税') || ql.includes('不含税')) {
+    return '部分模块支持增值税计算，可在参数中设置税率（默认6%）。<br><br>计算逻辑：<ul><li><strong>含税金额</strong> = 计算结果 × 折扣</li><li><strong>增值税额</strong> = 含税金额 - 含税金额 ÷ (1 + 税率)</li><li><strong>不含税金额</strong> = 含税金额 - 增值税额</li></ul>';
+  }
+  // 审计类型
+  if (ql.includes('审计') && (ql.includes('类型') || ql.includes('哪些') || ql.includes('种类'))) {
+    return '审计收费支持以下7种类型：<ul><li><strong>会计报表审计</strong></li><li><strong>行政事业单位财务收支审计</strong></li><li><strong>企业合并、分立、清算</strong>（按资产总额×5‰）</li><li><strong>经济责任审计</strong>（基础费用×1.5）</li><li><strong>专项审计-基本建设竣工决算</strong>（按资产总额×2.5‰）</li><li><strong>专项审计-高新技术企业</strong>（基础费用×1.3）</li><li><strong>专项审计-医疗卫生机构</strong></li></ul>';
+  }
+  // 招标代理类型
+  if (ql.includes('招标') && (ql.includes('类型') || ql.includes('哪些') || ql.includes('种类'))) {
+    return '招标代理支持3种服务类型：<ul><li><strong>货物招标</strong>：最高限额360万</li><li><strong>服务招标</strong>：最高限额400万</li><li><strong>工程招标</strong>：最高限额450万</li></ul>三种类型使用不同的费率表，工程招标费率最低。';
+  }
+  // 可研类型
+  if (ql.includes('可研') && (ql.includes('类型') || ql.includes('哪些') || ql.includes('种类'))) {
+    return '项目可研支持4种服务类型：<ul><li><strong>编制建议书</strong></li><li><strong>编制可研报告</strong></li><li><strong>评估建议书</strong></li><li><strong>评估可研报告</strong></li></ul>不同类型对应不同的插值基价表，编制可研报告的基价最高。';
+  }
+  // 全过程造价服务
+  if (ql.includes('全过程') && (ql.includes('服务') || ql.includes('类型') || ql.includes('哪些'))) {
+    return '全过程造价咨询分为三大类：<br><br><strong>技术经济类：</strong><ul><li>投资估算编制或审核</li><li>概算编制或审核</li><li>施工图预算编制/审核</li><li>工程量清单及最高投标限价编制/审核</li><li>工程结算编制/审核</li><li>工程结算复审</li><li>全过程造价咨询（多种阶段组合）</li></ul><strong>经济评鉴类：</strong><ul><li>设计概算/施工图预算/最高投标限价评审</li><li>工程变更评审</li><li>跟踪审计</li><li>竣工结算/财务决算审计</li></ul><strong>投资决策类：</strong><ul><li>项目投资机会研究</li><li>投融资策划</li><li>PPP项目相关报告编制/评估</li><li>项目建议书/可研报告评估</li></ul>此外还有计日成本、驻场成本、材料价格咨询等按次/按量计费的服务。';
+  }
+  // 模块跳转匹配
+  for (let name in modules) {
+    if (ql.includes(name.toLowerCase()) || ql.includes(name)) {
+      let page = modules[name];
+      let feeInfo = getModuleFeeInfo(name);
+      return feeInfo + '<br><br><a onclick="switchPage(\'' + page + '\');toggleAIChat();">👉 点击跳转到' + name + '模块</a>';
+    }
+  }
+  // 帮助
+  if (ql.includes('帮助') || ql.includes('怎么用') || ql.includes('使用')) {
+    return '平台使用方法：<ol><li>在左侧选择对应的计费模块</li><li>输入参数（投资额、折扣等）</li><li>点击"计算费用"按钮</li><li>查看计算结果和明细</li><li>可点击"导出Excel"保存结果</li></ol>如需查看依据文件，点击侧边栏底部的"依据文件"。';
+  }
+  // 默认回复
+  return '抱歉，我暂时无法回答这个问题。你可以尝试：<ul><li>输入模块名称，如"监理"、"审计"、"可研"</li><li>询问计算方法，如"什么是差额定率累进法"</li><li>询问使用方法，如"怎么导出Excel"</li></ul>';
+}
+
+function getModuleFeeInfo(name) {
+  let info = {
+    '资产评估': '<strong>资产评估</strong>采用差额定率累进法，费率从12‰递减到0.1‰，最低收费2000元。支持增值税计算。',
+    '房地产': '<strong>房地产估价</strong>采用差额定率累进法，费率从5‰递减到0.1‰，最低收费2000元。支持增值税计算。',
+    '土地': '<strong>土地估价</strong>采用差额定率累进法，费率从4‰递减到0.1‰，最低收费2000元。支持增值税计算。',
+    '社稳': '<strong>社稳风险评估</strong>根据投资规模分段计算基础基价（30万起），再乘以调整系数和折扣。',
+    '招标': '<strong>招标代理</strong>采用差额定率累进法，支持货物/服务/工程三种类型，各有不同费率和最高限额。',
+    '可研': '<strong>项目可研</strong>采用线性插值法确定基价，支持编制建议书、编制可研、评估建议书、评估可研4种类型，可设置行业调整系数和复杂程度系数。',
+    '工程设计': '<strong>工程设计</strong>采用线性插值法确定收费基价（18个节点），可设置专业/复杂程度/附加三个调整系数和其他设计收费，支持浮动幅度。',
+    '管理费': '<strong>建设单位管理费</strong>采用差额定率累进法，费率从14.6‰递减到2‰，可设置服务年限。',
+    '监理': '<strong>工程监理</strong>采用线性插值法确定收费基价（16个节点），可设置专业/复杂程度/高程三个调整系数，支持浮动幅度。',
+    '全过程': '<strong>全过程造价咨询</strong>包含技术经济类、经济评鉴类、投资决策类共30+种服务类型，涵盖估算、概算、预算、结算、审计等全过程。',
+    '审计': '<strong>审计收费</strong>支持7种审计类型，基础费用采用分段阶梯+超额累进法计算，不同类型有不同的计算方式（如企业合并按5‰计）。',
+    '绩效': '<strong>绩效评价(PPP)</strong>根据投资规模分段计算基础基价，再乘以调整系数和折扣。',
+    'ppp': '<strong>PPP咨询</strong>包含实施方案编制、物有所值评价、财政承受能力论证、合同编制4个子项，根据投资规模（亿元）分段计算。',
+    '汇总': '<strong>费用汇总</strong>一键计算所有模块的费用，按类别分组展示，支持统一折扣。包含评估估价、工程咨询、造价咨询、审计、绩效与PPP五大类别。'
+  };
+  return info[name] || '<strong>' + name + '</strong>模块';
+}
+
+// ==================== INIT ====================
+// Restore theme
+let savedTheme = localStorage.getItem('fee_theme');
+if (savedTheme && savedTheme !== 'default') {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.getElementById('themeSelect').value = savedTheme;
+}
+</script>
+</body>
+</html>
