@@ -1901,14 +1901,14 @@ function calc_managementFee() {
   let y = +document.getElementById('managementFee-years').value;
   let d = +document.getElementById('managementFee-discount').value;
   let res = progressiveCalcDetails(b, [
-    {max:1000,rate:2},{max:5000,rate:1.5},{max:10000,rate:1.2},
-    {max:50000,rate:1},{max:100000,rate:0.8},{max:Infinity,rate:0.4}
+    {max:1000,rate:20},{max:5000,rate:15},{max:10000,rate:12},
+    {max:50000,rate:10},{max:100000,rate:8},{max:Infinity,rate:4}
   ]);
   let ff = R2(res.total * y * d);
   let r = fmtW(ff);
   addHist('建设单位管理费', r);
   let bk = `差额定率累进法\n工程总概算：${fmt(b)} 万元\n`;
-  res.details.forEach(d2 => { bk += `  ${d2.range}万元: 计费额 ${fmt(d2.amount)} 万, 费率 ${d2.rate}, 费用 ${fmt(d2.fee)} 万\n`; });
+  res.details.forEach(d2 => { let ratePct = (parseFloat(d2.rate) / 10).toFixed(1); bk += `  ${d2.range}万元: 计费额 ${fmt(d2.amount)} 万, 费率 ${ratePct}%, 费用 ${fmt(d2.fee)} 万\n`; });
   bk += `年费率：${fmt(res.total)} 万元\n× ${y} 年\n× 折扣 ${(d * 100)}%\n= ${fmt(ff)} 万元`;
   showResult('managementFee', rH('建设单位管理费计算结果') + rA(ff) +
     rD([['工程总概算', fmtW(b)], ['服务年限', y + ' 年'], ['年费率', fmtW(R2(res.total))], ['折扣', (d * 100) + '%'], ['最终费用', fmtW(ff)]]) +
@@ -2372,7 +2372,7 @@ function calc_summary() {
 
   // 8. 建设单位管理费
   if (summaryIsChecked('managementFee')) {
-    items.push({ cat: '工程咨询', name: '建设单位管理费', fee: R2(progressiveCalc(b, [{max:1000,rate:2},{max:5000,rate:1.5},{max:10000,rate:1.2},{max:50000,rate:1},{max:100000,rate:0.8},{max:Infinity,rate:0.4}]) * d) });
+    items.push({ cat: '工程咨询', name: '建设单位管理费', fee: R2(progressiveCalc(b, [{max:1000,rate:20},{max:5000,rate:15},{max:10000,rate:12},{max:50000,rate:10},{max:100000,rate:8},{max:Infinity,rate:4}]) * d) });
   }
 
   // 9. 工程监理
