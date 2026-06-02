@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -1334,11 +1335,12 @@ mkPage('socialStability', '社会稳定风险评估',
   ],
   mkCollapsible('计费公式与费率表', 'book',
     `<div class="formula-box">计算方法：<span class="var">分段累进</span><br>最终费用 = 基础费用 × 调整系数 × 折扣</div>` +
-    mkRT(['投资额区间（万元）', '费用计算'], [
-      ['10000及以下', '固定 8 万元'],
-      ['10000～50000', '8 + (超出10000部分) x 0.125%'],
-      ['50000～100000', '上档结果 + (超出50000部分) x 0.1%'],
-      ['100000以上', '上档结果 + (超出10000部分) x 0.08%']
+    mkRT(['投资额区间（万元）', '费率', '算例'], [
+      ['1亿元（含）以下', '/', '原则上≥8万元'],
+      ['1亿元—5亿元（含）', '0.025%', '8+(50000-10000)×0.025%=18万元'],
+      ['5亿元—10亿元（含）', '0.018%', '18+(100000-50000)×0.018%=27万元'],
+      ['10亿元—50亿元', '0.00625%', '27+(500000-100000)×0.00625%=52万元'],
+      ['50亿元及以上', '—', '按项目投资额商定']
     ])
   )),
 
@@ -1419,9 +1421,9 @@ mkPage('managementFee', '建设单位管理费',
   ],
   mkCollapsible('计费公式与费率表', 'book',
     `<div class="formula-box">计算方法：<span class="var">差额定率累进法</span><br>最终费用 = 累进费用 × 年限 × 折扣</div>` +
-    mkRT(['工程总概算（万元）', '费率'], [
-      ['200及以下', '1.46%'], ['200～500', '1.06%'], ['500～2000', '0.79%'],
-      ['2000～5000', '0.53%'], ['5000～10000', '0.40%'], ['10000～50000', '0.26%'], ['50000以上', '0.20%']
+    mkRT(['工程总概算（万元）', '费率(%)'], [
+      ['1000以下', '2'], ['1001～5000', '1.5'], ['5001～10000', '1.2'],
+      ['10001～50000', '1'], ['50001～100000', '0.8'], ['100000以上', '0.4']
     ])
   )),
 
@@ -1767,22 +1769,31 @@ function calc_socialStability() {
   let d = +document.getElementById('socialStability-discount').value;
   let bf;
   if (b <= 10000) bf = 8;
-  else if (b <= 50000) bf = 8 + (b - 10000) * 0.00125;
-  else if (b <= 100000) bf = 8 + 40000 * 0.00125 + (b - 50000) * 0.001;
-  else bf = 8 + 40000 * 0.00125 + 50000 * 0.001 + (b - 100000) * 0.0008;
+  else if (b <= 50000) bf = 8 + (b - 10000) * 0.00025;
+  else if (b <= 100000) bf = 8 + 40000 * 0.00025 + (b - 50000) * 0.00018;
+  else if (b <= 500000) bf = 8 + 40000 * 0.00025 + 50000 * 0.00018 + (b - 100000) * 0.0000625;
+  else bf = null; // 50亿以上商定
+  if (bf === null) {
+    let r = '按项目投资额商定';
+    addHist('社稳风险评估', r);
+    showResult('socialStability', rH('社会稳定风险评估计算结果') + rA('—') +
+      rD([['投资规模', fmtW(b)], ['基础基价', '按项目投资额商定'], ['调整系数', a], ['折扣', (d * 100) + '%'], ['最终费用', '按项目投资额商定']]) +
+      rB('计算明细', `投资规模：${fmt(b)} 万元（≥50亿元）\n\n按项目投资额商定，无固定费率。`));
+    return;
+  }
   bf = R2(bf);
   let ff = R2(bf * a * d);
   let r = fmtW(ff);
   addHist('社稳风险评估', r);
   let bk = `投资规模：${fmt(b)} 万元\n\n基础基价计算（分段累进）：\n`;
   if (b <= 10000) {
-    bk += `  ≤10000万元：固定基价 8 万元\n`;
+    bk += `  ≤1亿元：固定基价 8 万元\n`;
   } else {
     let segs = [
-      {label:'0~10000万元', amt:10000, rate:0.00125, fixed:8},
-      {label:'10000~50000万元', start:10000, end:50000, rate:0.00125},
-      {label:'50000~100000万元', start:50000, end:100000, rate:0.001},
-      {label:'>100000万元', start:100000, end:Infinity, rate:0.0008}
+      {label:'1亿元以下', amt:10000, rate:0.00025, fixed:8},
+      {label:'1亿元—5亿元', start:10000, end:50000, rate:0.00025},
+      {label:'5亿元—10亿元', start:50000, end:100000, rate:0.00018},
+      {label:'10亿元—50亿元', start:100000, end:500000, rate:0.0000625}
     ];
     bk += `  基础基价：8 万元\n`;
     segs.forEach((s, i) => {
@@ -1791,7 +1802,7 @@ function calc_socialStability() {
         let segEnd = Math.min(b, s.end);
         let segAmt = segEnd - s.start;
         let segFee = segAmt * s.rate;
-        bk += `  + ${s.label}：${fmt(segAmt)} 万 × ${s.rate} = ${fmt(segFee)} 万\n`;
+        bk += `  + ${s.label}：${fmt(segAmt)} 万 × ${(s.rate * 100).toFixed(3)}% = ${fmt(segFee)} 万\n`;
       }
     });
   }
@@ -1890,8 +1901,8 @@ function calc_managementFee() {
   let y = +document.getElementById('managementFee-years').value;
   let d = +document.getElementById('managementFee-discount').value;
   let res = progressiveCalcDetails(b, [
-    {max:200,rate:14.6},{max:500,rate:10.6},{max:2000,rate:7.9},
-    {max:5000,rate:5.3},{max:10000,rate:4},{max:50000,rate:2.6},{max:Infinity,rate:2}
+    {max:1000,rate:2},{max:5000,rate:1.5},{max:10000,rate:1.2},
+    {max:50000,rate:1},{max:100000,rate:0.8},{max:Infinity,rate:0.4}
   ]);
   let ff = R2(res.total * y * d);
   let r = fmtW(ff);
@@ -2361,7 +2372,7 @@ function calc_summary() {
 
   // 8. 建设单位管理费
   if (summaryIsChecked('managementFee')) {
-    items.push({ cat: '工程咨询', name: '建设单位管理费', fee: R2(progressiveCalc(b, [{max:200,rate:14.6},{max:500,rate:10.6},{max:2000,rate:7.9},{max:5000,rate:5.3},{max:10000,rate:4},{max:50000,rate:2.6},{max:Infinity,rate:2}]) * d) });
+    items.push({ cat: '工程咨询', name: '建设单位管理费', fee: R2(progressiveCalc(b, [{max:1000,rate:2},{max:5000,rate:1.5},{max:10000,rate:1.2},{max:50000,rate:1},{max:100000,rate:0.8},{max:Infinity,rate:0.4}]) * d) });
   }
 
   // 9. 工程监理
@@ -2618,7 +2629,7 @@ function getModuleFeeInfo(name) {
     '招标': '<strong>招标代理</strong>采用差额定率累进法，支持货物/服务/工程三种类型，各有不同费率和最高限额。',
     '可研': '<strong>项目可研</strong>采用线性插值法确定基价，支持编制建议书、编制可研、评估建议书、评估可研4种类型，可设置行业调整系数和复杂程度系数。',
     '工程设计': '<strong>工程设计</strong>采用线性插值法确定收费基价（18个节点），可设置专业/复杂程度/附加三个调整系数和其他设计收费，支持浮动幅度。',
-    '管理费': '<strong>建设单位管理费</strong>采用差额定率累进法，费率从14.6‰递减到2‰，可设置服务年限。',
+    '管理费': '<strong>建设单位管理费</strong>采用差额定率累进法，费率从2%递减到0.4%，可设置服务年限。',
     '监理': '<strong>工程监理</strong>采用线性插值法确定收费基价（16个节点），可设置专业/复杂程度/高程三个调整系数，支持浮动幅度。',
     '全过程': '<strong>全过程造价咨询</strong>包含技术经济类、经济评鉴类、投资决策类共30+种服务类型，涵盖估算、概算、预算、结算、审计等全过程。',
     '审计': '<strong>审计收费</strong>支持7种审计类型，基础费用采用分段阶梯+超额累进法计算，不同类型有不同的计算方式（如企业合并按5‰计）。',
